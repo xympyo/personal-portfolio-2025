@@ -1,0 +1,11 @@
+Model Information:
+* title:	Through the Grapevine
+* source:	https://sketchfab.com/3d-models/through-the-grapevine-9fda6e6e6eab443490179536c51d8e62
+* author:	Loïc Norgeot (https://sketchfab.com/norgeotloic)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Through the Grapevine" (https://sketchfab.com/3d-models/through-the-grapevine-9fda6e6e6eab443490179536c51d8e62) by Loïc Norgeot (https://sketchfab.com/norgeotloic) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
