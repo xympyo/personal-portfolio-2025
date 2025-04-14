@@ -4,7 +4,7 @@ import upload_icon from "../../assets/upload_icon.png";
 // API configuration
 const API_URL =
   "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/analyze";
-const API_KEY = "A}{ctxYq{1+NYa-YaU@I"; // Replace with your actual API key
+const API_KEY = "A}{ctxYq{1+NYa-YaU@I"; 
 
 const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
   const [result, setResult] = useState(null);
@@ -35,18 +35,37 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
       setError(null);
 
       console.log("Processing audio file...");
+      console.log("File details:", {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      });
 
       // Send the file to the Flask backend
-      const response = await fetch(API_URL, {
+      console.log("Sending request to:", API_URL);
+      console.log("With API key:", API_KEY);
+      
+      // Try with a proxy approach to avoid CORS issues
+      const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+      const targetUrl = API_URL;
+      
+      const response = await fetch(proxyUrl + targetUrl, {
         method: "POST",
         headers: {
           "x-api-key": API_KEY,
+          "Origin": "https://moshedyn.vercel.app",
+          // Don't set Content-Type header when using FormData
+          // The browser will set it automatically with the boundary
         },
         body: formData,
       });
 
+      console.log("Response status:", response.status);
+      console.log("Response headers:", Object.fromEntries([...response.headers]));
+
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+        console.error("Error response:", errorData);
         throw new Error(errorData.error || `Server error: ${response.status}`);
       }
 
@@ -64,7 +83,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
       }, 5000);
     } catch (err) {
       console.error("Upload failed:", err);
-      setError(`Error: ${err.message || "Failed to process audio"}`);
+      setError(`Error: ${err.message || "Failed to process audio. This might be due to CORS restrictions. Please check the console for more details."}`);
       setIsComplete(false);
     } finally {
       setIsProcessing(false);
