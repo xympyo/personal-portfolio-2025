@@ -1,14 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import upload_icon from "../../assets/upload_icon.png";
 
 // API configuration
 const API_URL =
   "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/analyze";
-const API_KEY = "A}{ctxYq{1+NYa-YaU@I"; 
+const API_KEY = "A}{ctxYq{1+NYa-YaU@I";
 
 const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [apiStatus, setApiStatus] = useState("Checking...");
+
+  // Test API connection on component mount
+  useEffect(() => {
+    const testApiConnection = async () => {
+      try {
+        console.log("Testing API connection...");
+        const response = await fetch("https://portfolio-vn-detection-mfpsy.ondigitalocean.app/");
+        const data = await response.json();
+        console.log("API test response:", data);
+        setApiStatus("API is accessible");
+      } catch (err) {
+        console.error("API test failed:", err);
+        setApiStatus("API is not accessible");
+      }
+    };
+
+    testApiConnection();
+  }, []);
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -45,45 +64,95 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
       console.log("Sending request to:", API_URL);
       console.log("With API key:", API_KEY);
       
-      // Try with a proxy approach to avoid CORS issues
-      const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-      const targetUrl = API_URL;
-      
-      const response = await fetch(proxyUrl + targetUrl, {
-        method: "POST",
-        headers: {
-          "x-api-key": API_KEY,
-          "Origin": "https://moshedyn.vercel.app",
-          // Don't set Content-Type header when using FormData
-          // The browser will set it automatically with the boundary
-        },
-        body: formData,
-      });
+      // Try direct connection first
+      try {
+        console.log("Attempting direct connection...");
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "x-api-key": API_KEY,
+          },
+          body: formData,
+        });
 
-      console.log("Response status:", response.status);
-      console.log("Response headers:", Object.fromEntries([...response.headers]));
+        console.log("Response status:", response.status);
+        console.log(
+          "Response headers:",
+          Object.fromEntries([...response.headers])
+        );
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
-        console.error("Error response:", errorData);
-        throw new Error(errorData.error || `Server error: ${response.status}`);
+        if (!response.ok) {
+          const errorData = await response
+            .json()
+            .catch(() => ({ error: "Unknown error" }));
+          console.error("Error response:", errorData);
+          throw new Error(errorData.error || `Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("API response data:", data);
+
+        setResult(data);
+
+        // Set complete state to true
+        setIsComplete(true);
+
+        // After a delay, reset the complete state to allow for new uploads
+        setTimeout(() => {
+          setIsComplete(false);
+        }, 5000);
+      } catch (directError) {
+        console.error("Direct connection failed:", directError);
+        
+        // If direct connection fails, try with CORS proxy
+        console.log("Trying with CORS proxy...");
+        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+        const targetUrl = API_URL;
+        
+        const proxyResponse = await fetch(proxyUrl + targetUrl, {
+          method: "POST",
+          headers: {
+            "x-api-key": API_KEY,
+            Origin: "https://moshedyn.vercel.app",
+          },
+          body: formData,
+        });
+
+        console.log("Proxy response status:", proxyResponse.status);
+        console.log(
+          "Proxy response headers:",
+          Object.fromEntries([...proxyResponse.headers])
+        );
+
+        if (!proxyResponse.ok) {
+          const errorData = await proxyResponse
+            .json()
+            .catch(() => ({ error: "Unknown error" }));
+          console.error("Proxy error response:", errorData);
+          throw new Error(errorData.error || `Server error: ${proxyResponse.status}`);
+        }
+
+        const data = await proxyResponse.json();
+        console.log("Proxy API response data:", data);
+
+        setResult(data);
+
+        // Set complete state to true
+        setIsComplete(true);
+
+        // After a delay, reset the complete state to allow for new uploads
+        setTimeout(() => {
+          setIsComplete(false);
+        }, 5000);
       }
-
-      const data = await response.json();
-      console.log("API response data:", data);
-
-      setResult(data);
-
-      // Set complete state to true
-      setIsComplete(true);
-
-      // After a delay, reset the complete state to allow for new uploads
-      setTimeout(() => {
-        setIsComplete(false);
-      }, 5000);
     } catch (err) {
       console.error("Upload failed:", err);
-      setError(`Error: ${err.message || "Failed to process audio. This might be due to CORS restrictions. Please check the console for more details."}`);
+      setError(
+        `Error: ${
+          err.message ||
+          "Failed to process audio. This might be due to CORS restrictions. Please check the console for more details."
+        }`
+      );
       setIsComplete(false);
     } finally {
       setIsProcessing(false);
@@ -109,6 +178,12 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             and we will summarize it, and tell you if it is Safe For Work (SFW.)
           </p>
         </div>
+        
+        {/* API Status */}
+        <div className="mt-4 text-xs text-gray-500">
+          API Status: {apiStatus}
+        </div>
+        
         <div className="mt-12 w-full max-w-md">
           <form action="">
             <label htmlFor="inputForm" className="w-full">
