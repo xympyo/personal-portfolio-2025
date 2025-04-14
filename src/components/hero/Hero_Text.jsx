@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import upload_icon from "../../assets/upload_icon.png";
 
-// Mock API response for testing
-const MOCK_API_RESPONSE = {
-  transcribed_text: "This is a mock transcription of the audio file.",
-  cleaned_text: "this is a mock transcription of the audio file",
-  prediction: 0,
-};
+// API configuration
+const API_URL =
+  "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/analyze";
+const API_KEY = "A}{ctxYq{1+NYa-YaU@I"; // Replace with your actual API key
 
 const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
   const [result, setResult] = useState(null);
@@ -38,18 +36,22 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
 
       console.log("Processing audio file...");
 
-      // Use mock API for testing
-      console.log("Using mock API for testing");
+      // Send the file to the Flask backend
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "x-api-key": API_KEY,
+        },
+        body: formData,
+      });
 
-      // Simulate API delay (2 seconds)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Server error: ${response.status}`);
+      }
 
-      // Simulate processing delay (3 seconds)
-      console.log("Simulating processing delay...");
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      const data = MOCK_API_RESPONSE;
-      console.log("Mock API response data:", data);
+      const data = await response.json();
+      console.log("API response data:", data);
 
       setResult(data);
 
