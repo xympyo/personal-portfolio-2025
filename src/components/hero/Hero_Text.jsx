@@ -3,7 +3,7 @@ import upload_icon from "../../assets/upload_icon.png";
 
 // API configuration
 const API_URL =
-  "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/test";
+  "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/analyze";
 const API_KEY = "A}{ctxYq{1+NYa-YaU@I";
 
 const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
@@ -21,10 +21,35 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
         );
         const data = await response.json();
         console.log("API test response:", data);
-        setApiStatus("API is accessible");
+
+        // Test the /api/test endpoint
+        try {
+          console.log("Testing /api/test endpoint...");
+          const testResponse = await fetch(
+            "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/test",
+            {
+              method: "GET",
+              headers: {
+                "x-api-key": API_KEY,
+              },
+            }
+          );
+
+          if (testResponse.ok) {
+            const testData = await testResponse.json();
+            console.log("API test endpoint response:", testData);
+            setApiStatus("API is fully accessible");
+          } else {
+            console.error("API test endpoint failed:", testResponse.status);
+            setApiStatus("API base is accessible, but endpoints are not");
+          }
+        } catch (testErr) {
+          console.error("API test endpoint error:", testErr);
+          setApiStatus("API base is accessible, but endpoints are not");
+        }
       } catch (err) {
         console.error("API test failed:", err);
-        setApiStatus("API is not accessible");
+        setApiStatus("API is not accessible - Using fallback mode");
       }
     };
 
