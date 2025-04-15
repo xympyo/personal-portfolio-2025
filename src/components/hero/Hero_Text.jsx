@@ -3,7 +3,7 @@ import upload_icon from "../../assets/upload_icon.png";
 
 // API configuration
 const API_URL =
-  "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/analyze";
+  "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/test";
 const API_KEY = "A}{ctxYq{1+NYa-YaU@I";
 
 const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
@@ -16,7 +16,9 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
     const testApiConnection = async () => {
       try {
         console.log("Testing API connection...");
-        const response = await fetch("https://portfolio-vn-detection-mfpsy.ondigitalocean.app/");
+        const response = await fetch(
+          "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/"
+        );
         const data = await response.json();
         console.log("API test response:", data);
         setApiStatus("API is accessible");
@@ -63,7 +65,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
       // Send the file to the Flask backend
       console.log("Sending request to:", API_URL);
       console.log("With API key:", API_KEY);
-      
+
       // Try direct connection first
       try {
         console.log("Attempting direct connection...");
@@ -86,7 +88,9 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             .json()
             .catch(() => ({ error: "Unknown error" }));
           console.error("Error response:", errorData);
-          throw new Error(errorData.error || `Server error: ${response.status}`);
+          throw new Error(
+            errorData.error || `Server error: ${response.status}`
+          );
         }
 
         const data = await response.json();
@@ -103,12 +107,12 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
         }, 5000);
       } catch (directError) {
         console.error("Direct connection failed:", directError);
-        
+
         // If direct connection fails, try with CORS proxy
         console.log("Trying with CORS proxy...");
         const proxyUrl = "https://cors-anywhere.herokuapp.com/";
         const targetUrl = API_URL;
-        
+
         const proxyResponse = await fetch(proxyUrl + targetUrl, {
           method: "POST",
           headers: {
@@ -129,7 +133,9 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             .json()
             .catch(() => ({ error: "Unknown error" }));
           console.error("Proxy error response:", errorData);
-          throw new Error(errorData.error || `Server error: ${proxyResponse.status}`);
+          throw new Error(
+            errorData.error || `Server error: ${proxyResponse.status}`
+          );
         }
 
         const data = await proxyResponse.json();
@@ -178,12 +184,12 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             and we will summarize it, and tell you if it is Safe For Work (SFW.)
           </p>
         </div>
-        
+
         {/* API Status */}
         <div className="mt-4 text-xs text-gray-500">
           API Status: {apiStatus}
         </div>
-        
+
         <div className="mt-12 w-full max-w-md">
           <form action="">
             <label htmlFor="inputForm" className="w-full">
