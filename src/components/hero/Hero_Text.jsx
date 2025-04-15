@@ -16,36 +16,81 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
     const testApiConnection = async () => {
       try {
         console.log("Testing API connection...");
-        const response = await fetch(
-          "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/"
-        );
-        const data = await response.json();
-        console.log("API test response:", data);
 
-        // Test the /api/test endpoint
+        // Try with no-cors mode first
         try {
-          console.log("Testing /api/test endpoint...");
-          const testResponse = await fetch(
-            "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/test",
+          const response = await fetch(
+            "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/",
             {
               method: "GET",
-              headers: {
-                "x-api-key": API_KEY,
-              },
+              mode: "no-cors", // This will allow the request to go through, but we won't get the response
             }
           );
 
-          if (testResponse.ok) {
-            const testData = await testResponse.json();
-            console.log("API test endpoint response:", testData);
-            setApiStatus("API is fully accessible");
+          console.log("API test response (no-cors):", response);
+
+          // Since we're using no-cors, we can't read the response, but we can check if the request was sent
+          if (response.type === "opaque") {
+            console.log("API is accessible (opaque response)");
+
+            // Try the /api/test endpoint with API key
+            try {
+              console.log("Testing /api/test endpoint...");
+              const testResponse = await fetch(
+                "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/test",
+                {
+                  method: "GET",
+                  headers: {
+                    "x-api-key": API_KEY,
+                  },
+                }
+              );
+
+              if (testResponse.ok) {
+                const testData = await testResponse.json();
+                console.log("API test endpoint response:", testData);
+                setApiStatus("API is fully accessible");
+              } else {
+                console.error("API test endpoint failed:", testResponse.status);
+                setApiStatus("API base is accessible, but endpoints are not");
+              }
+            } catch (testErr) {
+              console.error("API test endpoint error:", testErr);
+              setApiStatus("API base is accessible, but endpoints are not");
+            }
           } else {
-            console.error("API test endpoint failed:", testResponse.status);
-            setApiStatus("API base is accessible, but endpoints are not");
+            console.log("API is accessible (normal response)");
+            setApiStatus("API is accessible");
           }
-        } catch (testErr) {
-          console.error("API test endpoint error:", testErr);
-          setApiStatus("API base is accessible, but endpoints are not");
+        } catch (noCorsErr) {
+          console.error("No-cors request failed:", noCorsErr);
+
+          // Try with CORS proxy
+          console.log("Trying with CORS proxy...");
+          const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+          const targetUrl =
+            "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/";
+
+          try {
+            const proxyResponse = await fetch(proxyUrl + targetUrl, {
+              method: "GET",
+              headers: {
+                Origin: "https://moshedyn.vercel.app",
+              },
+            });
+
+            if (proxyResponse.ok) {
+              const data = await proxyResponse.json();
+              console.log("Proxy API test response:", data);
+              setApiStatus("API is accessible via proxy");
+            } else {
+              console.error("Proxy API test failed:", proxyResponse.status);
+              setApiStatus("API is not accessible - Using fallback mode");
+            }
+          } catch (proxyErr) {
+            console.error("Proxy request failed:", proxyErr);
+            setApiStatus("API is not accessible - Using fallback mode");
+          }
         }
       } catch (err) {
         console.error("API test failed:", err);
