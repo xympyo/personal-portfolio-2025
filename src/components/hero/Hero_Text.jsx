@@ -288,8 +288,8 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
               <span
                 className={
                   result?.prediction?.toLowerCase() === "negative"
-                    ? "text-red-400"
-                    : "text-green-400"
+                    ? "text-red-500"
+                    : "text-green-500"
                 }
               >
                 {result?.summary}
