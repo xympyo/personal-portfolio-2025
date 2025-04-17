@@ -280,8 +280,12 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
         {/* Optional: Output */}
         {result && (
           <div className="mt-4 text-secondary text-xs md:text-small font-light text-center w-full">
-            <p>Intinya {result?.prediction}</p>
-            <p>Konteks : {result?.summary}</p>
+            <p>
+              Intinya <span>{result?.prediction}</span>
+            </p>
+            <p>
+              Konteks : <span>{result?.summary}</span>
+            </p>
           </div>
         )}
       </div>
