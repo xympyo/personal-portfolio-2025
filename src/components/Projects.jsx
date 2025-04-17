@@ -1,10 +1,10 @@
 import React from "react";
-import topLeft from "../assets/projects_img/final_wmp.png";
-import left from "../assets/projects_img/spacepal.png";
-import upperTop from "../assets/projects_img/komplenifas.png";
-import lowerTop from "../assets/projects_img/ssip.png";
-import topRight from "../assets/projects_img/prediver.png";
-import right from "../assets/projects_img/budi_nlug.png";
+import topLeft from "../assets/projects_img/final_wmp.jpg";
+import left from "../assets/projects_img/spacepal.jpg";
+import upperTop from "../assets/projects_img/komplenifas.jpg";
+import lowerTop from "../assets/projects_img/ssip.jpg";
+import topRight from "../assets/projects_img/prediver.jpg";
+import right from "../assets/projects_img/budi_nlug.jpg";
 
 const Projects = () => {
   return (
