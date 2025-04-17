@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const refContainer = useRef(null);
-  const [animationSpeed, setAnimationSpeed] = useState(0.7);
+  const [animationSpeed, setAnimationSpeed] = useState(0.75);
+  const [xSpeed, setXSpeed] = useState(0);
+  const [ySpeed, setYSpeed] = useState(0.01);
   const mixerRef = useRef(null);
   const sphereRef = useRef(null);
   const [error, setError] = useState(null);
@@ -12,19 +14,61 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const actionRef = useRef(null);
   const processingStartTimeRef = useRef(null);
   const lastRotationTimeRef = useRef(Date.now());
+  const rendererRef = useRef(null);
+  const sceneRef = useRef(null);
+  const cameraRef = useRef(null);
+
+  const reRender3D = useCallback(() => {
+    requestAnimationFrame(reRender3D);
+    if (
+      sphereRef.current &&
+      sceneRef.current &&
+      cameraRef.current &&
+      rendererRef.current
+    ) {
+      const currentTime = Date.now();
+
+      if (isProcessing && processingStartTimeRef.current) {
+        const processingElapsedTime =
+          currentTime - processingStartTimeRef.current;
+        if (processingElapsedTime < 500) {
+          // First 0.5 seconds of processing
+          // Reverse rotation
+          sphereRef.current.rotation.y -= ySpeed * animationSpeed;
+        } else {
+          // Normal rotation after 0.5 seconds
+          sphereRef.current.rotation.y += ySpeed * animationSpeed;
+        }
+      } else {
+        // Normal rotation in all other cases
+        sphereRef.current.rotation.y += ySpeed * animationSpeed;
+        sphereRef.current.rotation.x += xSpeed * animationSpeed;
+      }
+
+      lastRotationTimeRef.current = currentTime;
+
+      if (mixerRef.current) {
+        mixerRef.current.update(0.02 * animationSpeed);
+      }
+      rendererRef.current.render(sceneRef.current, cameraRef.current);
+    }
+  }, [isProcessing, xSpeed, ySpeed, animationSpeed]);
 
   useEffect(() => {
     try {
       // === THREE.JS CODE START ===
       var scene = new THREE.Scene();
+      sceneRef.current = scene;
       var camera = new THREE.PerspectiveCamera(
         window.innerWidth <= 768 ? 28 : 20,
         window.innerWidth / window.innerHeight,
         0.1,
         1000
       );
+      cameraRef.current = camera;
       camera.position.z = 12;
       const renderer = new THREE.WebGLRenderer({ alpha: true });
+      rendererRef.current = renderer;
 
       // Set initial size - make it larger for better visibility
       const containerWidth =
@@ -94,37 +138,6 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       const topLight = new THREE.DirectionalLight(0xffffff, 1);
       topLight.position.set(100, 500, 0);
 
-      const reRender3D = () => {
-        requestAnimationFrame(reRender3D);
-        if (sphereRef.current) {
-          const currentTime = Date.now();
-          // const elapsedTime = currentTime - lastRotationTimeRef.current;
-
-          if (isProcessing && processingStartTimeRef.current) {
-            const processingElapsedTime =
-              currentTime - processingStartTimeRef.current;
-            if (processingElapsedTime < 500) {
-              // First 0.5 seconds of processing
-              // Reverse rotation
-              sphereRef.current.rotation.y -= 0.01 * animationSpeed;
-            } else {
-              // Normal rotation after 0.5 seconds
-              sphereRef.current.rotation.y += 0.01 * animationSpeed;
-            }
-          } else {
-            // Normal rotation in all other cases
-            sphereRef.current.rotation.y += 0.01 * animationSpeed;
-          }
-
-          lastRotationTimeRef.current = currentTime;
-
-          if (mixerRef.current) {
-            mixerRef.current.update(0.02 * animationSpeed);
-          }
-        }
-        renderer.render(scene, camera);
-      };
-
       reRender3D();
 
       // Handle window resize
@@ -170,13 +183,15 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       if (isProcessing) {
         // Start animation at normal speed
         console.log("Starting animation at normal speed");
-        setAnimationSpeed(1);
+        setAnimationSpeed(1.25);
+        setXSpeed(1);
+        setYSpeed(1);
         processingStartTimeRef.current = Date.now();
         lastRotationTimeRef.current = Date.now();
 
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
         console.log("Setting time scale to 1 for processing");
-        action.setEffectiveTimeScale(1);
+        action.setEffectiveTimeScale(animationSpeed);
         if (actionRef.current) {
           console.log("Stopping previous action");
           actionRef.current.stop();
@@ -191,8 +206,8 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         setAnimationSpeed(0.3);
 
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
-        console.log("Setting time scale to 0.5 for complete");
-        action.setEffectiveTimeScale(0.5);
+        console.log("Setting time scale to 0.3 for complete");
+        action.setEffectiveTimeScale(animationSpeed);
         if (actionRef.current) {
           console.log("Stopping previous action");
           actionRef.current.stop();
@@ -204,11 +219,11 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       } else {
         // Return to default speed (0.5)
         console.log("Returning to default speed");
-        setAnimationSpeed(0.5);
+        setAnimationSpeed(0.75);
 
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
         console.log("Setting time scale to 0.5 for default");
-        action.setEffectiveTimeScale(0.5);
+        action.setEffectiveTimeScale(animationSpeed);
         if (actionRef.current) {
           console.log("Stopping previous action");
           actionRef.current.stop();
