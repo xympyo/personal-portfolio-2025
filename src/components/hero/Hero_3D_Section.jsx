@@ -4,7 +4,7 @@ import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const refContainer = useRef(null);
-  const [animationSpeed, setAnimationSpeed] = useState(1);
+  const [animationSpeed, setAnimationSpeed] = useState(0.5);
   const mixerRef = useRef(null);
   const sphereRef = useRef(null);
   const [error, setError] = useState(null);
@@ -93,9 +93,6 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         if (sphereRef.current) {
           // Always rotate the sphere, regardless of animation state
           sphereRef.current.rotation.y += 0.01 * animationSpeed;
-          const action = mixerRef.current.clipAction(animationsRef.current[0]);
-          action.setEffectiveTimeScale(0.5);
-          action.play();
           if (mixerRef.current) {
             mixerRef.current.update(0.02 * animationSpeed);
           }
@@ -143,38 +140,66 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       }
 
       console.log("Animation state changed:", { isProcessing, isComplete });
+      console.log("Current animation speed:", animationSpeed);
+      
       if (isProcessing) {
         // Start animation at normal speed
         console.log("Starting animation at normal speed");
-
-        const action = mixerRef.current.clipAction(animationsRef.current[0]);
         setAnimationSpeed(1);
 
+        const action = mixerRef.current.clipAction(animationsRef.current[0]);
+        console.log("Setting time scale to 1 for processing");
+        action.setEffectiveTimeScale(1);
         if (actionRef.current) {
+          console.log("Stopping previous action");
           actionRef.current.stop();
         }
 
-        action.setEffectiveTimeScale(1);
         action.play();
         actionRef.current = action;
+        console.log("New action started with time scale:", action.timeScale);
       } else if (isComplete) {
         // Slow down animation
         console.log("Slowing down animation");
         setAnimationSpeed(0.3);
-      } else {
-        // Stop animation but keep rotating
-        console.log("Stopping animation, keeping rotation");
-        setAnimationSpeed(1);
-
+        
+        const action = mixerRef.current.clipAction(animationsRef.current[0]);
+        console.log("Setting time scale to 0.3 for complete");
+        action.setEffectiveTimeScale(0.3);
         if (actionRef.current) {
+          console.log("Stopping previous action");
           actionRef.current.stop();
-          actionRef.current = null;
         }
+        
+        action.play();
+        actionRef.current = action;
+        console.log("New action started with time scale:", action.timeScale);
+      } else {
+        // Return to default speed (0.5)
+        console.log("Returning to default speed");
+        setAnimationSpeed(0.5);
+
+        const action = mixerRef.current.clipAction(animationsRef.current[0]);
+        console.log("Setting time scale to 0.5 for default");
+        action.setEffectiveTimeScale(0.5);
+        if (actionRef.current) {
+          console.log("Stopping previous action");
+          actionRef.current.stop();
+        }
+
+        action.play();
+        actionRef.current = action;
+        console.log("New action started with time scale:", action.timeScale);
       }
     } catch (err) {
       console.error("Error controlling animation:", err);
     }
   }, [isProcessing, isComplete]);
+
+  // Add a debug effect to monitor animation speed changes
+  useEffect(() => {
+    console.log("Animation speed state changed to:", animationSpeed);
+  }, [animationSpeed]);
 
   return (
     <div className="absolute inset-0 w-full h-full z-[-1]">
