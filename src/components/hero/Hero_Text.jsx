@@ -237,7 +237,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             <br />2 mentioning cigarettes, in front of his mom.
           </p>
         </div>
-        <div className="flex justify-center">
+        <div className="flex-col justify-center">
           <p className="text-secondary text-sm md:text-small font-normal text-center mt-4 overflow-y-hidden">
             Submit your Voice Note below,
             <br />
