@@ -18,12 +18,6 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const [rotationX, setRotationX] = useState(0);
   const [rotationY, setRotationY] = useState(0);
 
-  // Load textures
-  const textureLoader = new THREE.TextureLoader();
-  const goldTexture = textureLoader.load("/textures/gold.jpg");
-  const rustTexture = textureLoader.load("/textures/rust.jpg");
-  const scrapTexture = textureLoader.load("/textures/scrap.jpg");
-
   useEffect(() => {
     try {
       // === THREE.JS CODE START ===
@@ -57,8 +51,6 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         color: 0x00ffff, // Cyan blue
         transparent: true,
         opacity: 0.8,
-        emissive: 0x00ffff,
-        emissiveIntensity: 1.0,
       });
       const innerSphere = new THREE.Mesh(innerGeometry, innerMaterial);
       innerSphereRef.current = innerSphere;
@@ -70,11 +62,6 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         color: 0xc0c0c0, // Silver
         metalness: 0.9,
         roughness: 0.2,
-        map: goldTexture,
-        normalMap: scrapTexture,
-        normalScale: new THREE.Vector2(0.5, 0.5),
-        aoMap: rustTexture,
-        aoMapIntensity: 0.5,
       });
       const outerSphere = new THREE.Mesh(outerGeometry, outerMaterial);
       outerSphereRef.current = outerSphere;
@@ -235,48 +222,41 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
 
   // Function to update material effects based on animation phase
   const updateMaterialEffects = () => {
-    if (!innerSphereRef.current || !outerSphereRef.current) return;
+    try {
+      if (!innerSphereRef.current || !outerSphereRef.current) return;
 
-    const innerMaterial = innerSphereRef.current.material;
-    const outerMaterial = outerSphereRef.current.material;
+      const innerMaterial = innerSphereRef.current.material;
+      const outerMaterial = outerSphereRef.current.material;
 
-    if (animationPhase === "idle") {
-      // Default state - silver with cyan inner glow
-      outerMaterial.color.set(0xc0c0c0);
-      outerMaterial.emissive.set(0x000000);
-      outerMaterial.emissiveIntensity = 0;
+      if (!innerMaterial || !outerMaterial) return;
 
-      innerMaterial.color.set(0x00ffff);
-      innerMaterial.emissive.set(0x00ffff);
-      innerMaterial.emissiveIntensity = 0.8;
-    } else if (animationPhase === "processing") {
-      // Processing state - brighter with increased glow
-      outerMaterial.color.set(0xd0d0d0);
-      outerMaterial.emissive.set(0x404040);
-      outerMaterial.emissiveIntensity = 0.3;
-
-      innerMaterial.color.set(0x00ffff);
-      innerMaterial.emissive.set(0x00ffff);
-      innerMaterial.emissiveIntensity = 1.0;
-    } else if (animationPhase === "complete") {
-      // Complete state - color based on prediction result
-      outerMaterial.color.set(0xc0c0c0);
-      outerMaterial.emissive.set(0x000000);
-      outerMaterial.emissiveIntensity = 0;
-
-      if (predictionResult === "positive") {
-        innerMaterial.color.set(0x00ff00);
-        innerMaterial.emissive.set(0x00ff00);
-        innerMaterial.emissiveIntensity = 1.0;
-      } else if (predictionResult === "negative") {
-        innerMaterial.color.set(0xff0000);
-        innerMaterial.emissive.set(0xff0000);
-        innerMaterial.emissiveIntensity = 1.0;
-      } else {
+      if (animationPhase === "idle") {
+        // Default state - silver with cyan inner glow
+        outerMaterial.color.set(0xc0c0c0);
         innerMaterial.color.set(0x00ffff);
-        innerMaterial.emissive.set(0x00ffff);
-        innerMaterial.emissiveIntensity = 0.8;
+        innerMaterial.opacity = 0.8;
+      } else if (animationPhase === "processing") {
+        // Processing state - brighter with increased glow
+        outerMaterial.color.set(0xd0d0d0);
+        innerMaterial.color.set(0x00ffff);
+        innerMaterial.opacity = 1.0;
+      } else if (animationPhase === "complete") {
+        // Complete state - color based on prediction result
+        outerMaterial.color.set(0xc0c0c0);
+
+        if (predictionResult === "positive") {
+          innerMaterial.color.set(0x00ff00);
+          innerMaterial.opacity = 1.0;
+        } else if (predictionResult === "negative") {
+          innerMaterial.color.set(0xff0000);
+          innerMaterial.opacity = 1.0;
+        } else {
+          innerMaterial.color.set(0x00ffff);
+          innerMaterial.opacity = 0.8;
+        }
       }
+    } catch (err) {
+      console.error("Error updating material effects:", err);
     }
   };
 
