@@ -229,21 +229,21 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
     <div className="flex justify-center">
       <div className="flex flex-col items-center mt-24 mx-auto px-4">
         <div className="flex flex-col items-center">
-          <h1 className="text-secondary text-small md:text-large font-medium text-center ">
+          <h1 className="text-secondary text-2xl md:text-2xl overflow-y-hidden font-medium text-center">
             "Voice Note should have NSFW System."
           </h1>
-          <p className="text-secondary text-xs md:text-small font-light text-center mt-4   ">
+          <p className="text-secondary text-lg md:text-base font-light text-left mt-4">
             - Moshe, after hearing 8 harmful words,
             <br />2 mentioning cigarettes, in front of his mom.
           </p>
         </div>
         <div className="flex-col justify-center">
-          <p className="text-secondary text-sm md:text-small font-normal text-center mt-4 ">
+          <p className="text-secondary text-lg md:text-lg font-normal text-center mt-4">
             Submit your Voice Note below,
             <br />
             and we will summarize it, and tell you if it is Safe For Work (SFW.)
           </p>
-          <p className="text-secondary text-sm md:text-small font-normal text-left mt-4 ">
+          <p className="text-secondary text-base md:text-base font-normal text-left mt-4">
             The voice note should be in Indonesia
           </p>
         </div>
@@ -253,7 +253,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             <label htmlFor="inputForm" className="">
               <div className="border border-secondary p-3 rounded-xl flex align-middle justify-center cursor-pointer transition-colors">
                 <img src={upload_icon} alt="Upload Icon" className="w-5 h-5" />
-                <p className="ms-2 text-secondary font-light text-small">
+                <p className="ms-2 text-secondary font-light text-base">
                   {isProcessing ? "Processing..." : "Drag your voice note here"}
                 </p>
               </div>
@@ -272,18 +272,18 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
 
         {/* Error message */}
         {error && (
-          <div className="mt-4 text-red-500 text-xs md:text-small font-light text-center ">
+          <div className="mt-4 text-red-500 text-base md:text-sm font-light text-center">
             {error}
           </div>
         )}
 
         {/* Optional: Output */}
         {result && (
-          <div className="mt-4 text-secondary text-xs md:text-small font-light text-center  ">
-            <p className="">
+          <div className="mt-4 text-secondary text-base md:text-sm font-light text-center">
+            <p>
               Intinya <span>{result?.prediction}</span>
             </p>
-            <p className="">
+            <p>
               Konteks : <span>{result?.summary}</span>
             </p>
           </div>

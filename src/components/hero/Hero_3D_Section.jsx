@@ -4,9 +4,9 @@ import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const refContainer = useRef(null);
-  const [animationSpeed, setAnimationSpeed] = useState(0.75);
+  const [animationSpeed, setAnimationSpeed] = useState(0.5);
   const [xSpeed, setXSpeed] = useState(0);
-  const [ySpeed, setYSpeed] = useState(0.01);
+  const [ySpeed, setYSpeed] = useState(0.1);
   const mixerRef = useRef(null);
   const sphereRef = useRef(null);
   const [error, setError] = useState(null);
@@ -53,6 +53,23 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       rendererRef.current.render(sceneRef.current, cameraRef.current);
     }
   }, [isProcessing, xSpeed, ySpeed, animationSpeed]);
+
+  useEffect(() => {
+    // Handle animation speeds based on isProcessing and isComplete
+    if (isProcessing) {
+      setAnimationSpeed(1.5);
+      setXSpeed(0.75);
+      setYSpeed(0.75);
+    } else if (isComplete) {
+      setAnimationSpeed(0.3);
+      setXSpeed(0);
+      setYSpeed(0.1);
+    } else {
+      setAnimationSpeed(0.5);
+      setXSpeed(0);
+      setYSpeed(0.1);
+    }
+  }, [isProcessing, isComplete]);
 
   useEffect(() => {
     try {

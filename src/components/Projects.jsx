@@ -5,58 +5,175 @@ import upperTop from "../assets/projects_img/komplenifas.jpg";
 import lowerTop from "../assets/projects_img/ssip.jpg";
 import topRight from "../assets/projects_img/prediver.jpg";
 import right from "../assets/projects_img/budi_nlug.jpg";
+import "./ProjectsHover.css";
 
 const Projects = () => {
   return (
     <div className="flex justify-center mt-20 sm:mt-40 px-4 lg:px-0">
       <div className="hidden lg:block w-1/6"></div>
       <div className="flex flex-col justify-center w-full lg:w-auto">
-        <h1 className="text-medium text-center mb-2">my projects</h1>
+        <h1 className="text-lg md:text-2xl text-center mb-2 overflow-y-hidden">
+          my projects
+        </h1>
         <div className="flex">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-4 grid-flow-dense w-full">
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 grid-flow-dense w-full">
             <div className="flex row-span-1 sm:row-span-2">
-              <img
-                src={topLeft}
-                alt="Firebase Application Image"
-                className="w-full h-auto object-cover"
-              />
+              <div className="col-span-1"></div>
+              <a
+                href="https://www.linkedin.com/in/moshedayan/details/projects/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="col-span-1 md:col-span-3 w-full h-auto object-cover"
+                style={{ textDecoration: "none" }}
+              >
+                <div className="project-image-container w-full h-auto object-cover">
+                  <img
+                    src={topLeft}
+                    alt="Firebase Application Image"
+                    className="project-image"
+                  />
+                  <div className="flex flex-col project-hover-overlay">
+                    <p className="text-primary text-base text-center">
+                      Firebase Application
+                    </p>
+                    <span className="project-hover-text">View Project</span>
+                    <p className="text-primary text-xs text-center">
+                      This application doesn't have ready to use application
+                    </p>
+                  </div>
+                </div>
+              </a>
+              <div className="col-span-1"></div>
             </div>
             <div className="flex row-span-1 sm:row-span-2">
-              <img
-                src={left}
-                alt="Spacepal Software Image"
+              <a
+                href="https://www.linkedin.com/in/moshedayan/details/projects/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full h-auto object-cover"
-              />
+                style={{ textDecoration: "none" }}
+              >
+                <div className="project-image-container w-full h-auto object-cover">
+                  <img
+                    src={left}
+                    alt="Spacepal Software Image"
+                    className="project-image"
+                  />
+                  <div className="flex flex-col project-hover-overlay">
+                    <p className="text-primary text-base text-center">
+                      Spacepal Children Learning Software
+                    </p>
+                    <span className="project-hover-text">View Project</span>
+                    <p className="text-primary text-xs text-center">
+                      This application doesn't have ready to use application
+                    </p>
+                  </div>
+                </div>
+              </a>
             </div>
-            <div className="flex flex-col col-span-1 sm:col-span-2 row-span-1 sm:row-span-2 gap-5">
+            <div className="flex flex-col col-span-2 row-span-1 sm:row-span-2 gap-5">
               <div className="flex">
-                <img
-                  src={upperTop}
-                  alt=""
+                <a
+                  href="https://komplenifas.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full h-auto object-cover"
-                />
+                  style={{ textDecoration: "none" }}
+                >
+                  <div className="project-image-container w-full h-auto object-cover">
+                    <img
+                      src={upperTop}
+                      alt="Komplenifas Project"
+                      className="project-image"
+                    />
+                    <div className="flex flex-col project-hover-overlay">
+                      <p className="text-primary text-base text-center">
+                        Komplenifas
+                      </p>
+                      <span className="project-hover-text">View Project</span>
+                    </div>
+                  </div>
+                </a>
               </div>
               <div className="flex">
-                <img
-                  src={lowerTop}
-                  alt=""
+                <a
+                  href="https://www.linkedin.com/in/moshedayan/details/projects/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full h-auto object-cover"
-                />
+                  style={{ textDecoration: "none" }}
+                >
+                  <div className="project-image-container w-full h-auto object-cover">
+                    <img
+                      src={lowerTop}
+                      alt="SSIP Project"
+                      className="project-image"
+                    />
+                    <div className="flex flex-col project-hover-overlay">
+                      <p className="text-primary text-base text-center">
+                        Cepi's Cafe <br />
+                        Full Stack Laravel mySQL
+                      </p>
+                      <span className="project-hover-text">View Project</span>
+                      <p className="text-primary text-xs text-center">
+                        This application doesn't have ready to use application
+                      </p>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
             <div className="flex row-span-1 sm:row-span-2">
-              <img
-                src={right}
-                alt="Prediver Software Image"
+              <a
+                href="https://www.linkedin.com/in/moshedayan/details/projects/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full h-auto object-cover"
-              />
+                style={{ textDecoration: "none" }}
+              >
+                <div className="project-image-container w-full h-auto object-cover">
+                  <img
+                    src={right}
+                    alt="Budi NLUG Project"
+                    className="project-image"
+                  />
+                  <div className="flex flex-col project-hover-overlay">
+                    <p className="text-primary text-base text-center">
+                      AI ChatBot using custom model called Budi
+                    </p>
+                    <span className="project-hover-text">View Project</span>
+                    <p className="text-primary text-xs text-center">
+                      This application doesn't have ready to use application
+                    </p>
+                  </div>
+                </div>
+              </a>
             </div>
             <div className="flex row-span-1 sm:row-span-2">
-              <img
-                src={topRight}
-                alt="AI ChatBot Budi"
+              <a
+                href="https://www.linkedin.com/in/moshedayan/details/projects/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full h-auto object-cover"
-              />
+                style={{ textDecoration: "none" }}
+              >
+                <div className="project-image-container w-full h-auto object-cover">
+                  <img
+                    src={topRight}
+                    alt="AI ChatBot Budi"
+                    className="project-image"
+                  />
+                  <div className="flex flex-col project-hover-overlay">
+                    <p className="text-primary text-base text-center">
+                      RFT Based Classification Software Prediver
+                    </p>
+                    <span className="project-hover-text">View Project</span>
+                    <p className="text-primary text-xs text-center">
+                      This application doesn't have ready to use application
+                    </p>
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
         </div>

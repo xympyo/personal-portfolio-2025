@@ -22,8 +22,10 @@ class ErrorBoundary extends React.Component {
       return (
         <div className="p-4 bg-red-100 text-red-800 rounded-lg">
           <h2 className="text-lg font-bold">Something went wrong</h2>
-          <p className="text-sm">{this.state.error?.message || "Unknown error"}</p>
-          <button 
+          <p className="text-sm">
+            {this.state.error?.message || "Unknown error"}
+          </p>
+          <button
             className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
             onClick={() => window.location.reload()}
           >
@@ -50,12 +52,9 @@ const Hero_Section = () => {
   return (
     <ErrorBoundary>
       <div className="relative">
-        <Hero_3D_Section 
-          isProcessing={isProcessing} 
-          isComplete={isComplete} 
-        />
-        <Hero_Text 
-          isProcessing={isProcessing} 
+        <Hero_3D_Section isProcessing={isProcessing} isComplete={isComplete} />
+        <Hero_Text
+          isProcessing={isProcessing}
           setIsProcessing={setIsProcessing}
           setIsComplete={setIsComplete}
         />
