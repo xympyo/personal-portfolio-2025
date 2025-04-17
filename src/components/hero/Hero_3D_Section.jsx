@@ -4,9 +4,9 @@ import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const refContainer = useRef(null);
-  const [animationSpeed, setAnimationSpeed] = useState(0.5);
+  const [animationSpeed, setAnimationSpeed] = useState(0.475); // slower default
   const [xSpeed, setXSpeed] = useState(0);
-  const [ySpeed, setYSpeed] = useState(0.1);
+  const [ySpeed, setYSpeed] = useState(0.01); // much slower default
   const mixerRef = useRef(null);
   const sphereRef = useRef(null);
   const [error, setError] = useState(null);
@@ -34,15 +34,15 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         if (processingElapsedTime < 500) {
           // First 0.5 seconds of processing
           // Reverse rotation
-          sphereRef.current.rotation.y = ySpeed;
+          sphereRef.current.rotation.y += ySpeed;
         } else {
           // Normal rotation after 0.5 seconds
-          sphereRef.current.rotation.y = ySpeed;
+          sphereRef.current.rotation.y += ySpeed;
         }
       } else {
         // Normal rotation in all other cases
-        sphereRef.current.rotation.y = ySpeed;
-        sphereRef.current.rotation.x = xSpeed;
+        sphereRef.current.rotation.y += ySpeed;
+        sphereRef.current.rotation.x += xSpeed;
       }
 
       lastRotationTimeRef.current = currentTime;
@@ -63,11 +63,11 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
     } else if (isComplete) {
       setAnimationSpeed(0.3);
       setXSpeed(0);
-      setYSpeed(0.1);
+      setYSpeed(0.01);
     } else {
-      setAnimationSpeed(0.5);
+      setAnimationSpeed(0.2);
       setXSpeed(0);
-      setYSpeed(0.1);
+      setYSpeed(0.01);
     }
   }, [isProcessing, isComplete]);
 
@@ -223,6 +223,13 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       console.error("Error controlling animation:", err);
     }
   }, [isProcessing, isComplete]);
+
+  // Ensure AnimationMixer time scale updates with animationSpeed
+  useEffect(() => {
+    if (mixerRef.current && actionRef.current) {
+      actionRef.current.setEffectiveTimeScale(animationSpeed);
+    }
+  }, [animationSpeed]);
 
   // Add a debug effect to monitor animation speed changes
   useEffect(() => {
