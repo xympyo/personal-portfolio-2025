@@ -34,6 +34,7 @@ const About = () => {
             </div>
             <a
               href="https://linkedin.com/in/moshedayan/"
+              target="_blank"
               className="bg-secondary rounded-lg p-2 mt-4 lg:w-auto text-center"
             >
               <p className="text-primary text-sm md:text-base">
