@@ -11,7 +11,7 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const animationsRef = useRef([]);
   const actionRef = useRef(null);
   const processingStartTimeRef = useRef(null);
-  const [isRotatingBack, setIsRotatingBack] = useState(false);
+  const lastRotationTimeRef = useRef(Date.now());
 
   useEffect(() => {
     try {
@@ -97,14 +97,26 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       const reRender3D = () => {
         requestAnimationFrame(reRender3D);
         if (sphereRef.current) {
-          // Handle Y rotation based on processing state
-          if (isProcessing && !isRotatingBack) {
-            // Decrease rotation during the first 0.5 seconds
-            sphereRef.current.rotation.y -= 0.01 * animationSpeed;
+          const currentTime = Date.now();
+          // const elapsedTime = currentTime - lastRotationTimeRef.current;
+
+          if (isProcessing && processingStartTimeRef.current) {
+            const processingElapsedTime =
+              currentTime - processingStartTimeRef.current;
+            if (processingElapsedTime < 500) {
+              // First 0.5 seconds of processing
+              // Reverse rotation
+              sphereRef.current.rotation.y -= 0.01 * animationSpeed;
+            } else {
+              // Normal rotation after 0.5 seconds
+              sphereRef.current.rotation.y += 0.01 * animationSpeed;
+            }
           } else {
             // Normal rotation in all other cases
             sphereRef.current.rotation.y += 0.01 * animationSpeed;
           }
+
+          lastRotationTimeRef.current = currentTime;
 
           if (mixerRef.current) {
             mixerRef.current.update(0.02 * animationSpeed);
@@ -154,13 +166,13 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
 
       console.log("Animation state changed:", { isProcessing, isComplete });
       console.log("Current animation speed:", animationSpeed);
-      
+
       if (isProcessing) {
         // Start animation at normal speed
         console.log("Starting animation at normal speed");
         setAnimationSpeed(1);
         processingStartTimeRef.current = Date.now();
-        setIsRotatingBack(false);
+        lastRotationTimeRef.current = Date.now();
 
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
         console.log("Setting time scale to 1 for processing");
@@ -210,23 +222,6 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       console.error("Error controlling animation:", err);
     }
   }, [isProcessing, isComplete]);
-
-  // Add effect to handle rotation transition
-  useEffect(() => {
-    if (isProcessing && !isRotatingBack) {
-      const checkRotation = () => {
-        if (!processingStartTimeRef.current) return;
-        
-        const elapsedTime = Date.now() - processingStartTimeRef.current;
-        if (elapsedTime >= 500) { // 0.5 seconds
-          setIsRotatingBack(true);
-        }
-      };
-
-      const intervalId = setInterval(checkRotation, 16); // Check roughly every frame
-      return () => clearInterval(intervalId);
-    }
-  }, [isProcessing, isRotatingBack]);
 
   // Add a debug effect to monitor animation speed changes
   useEffect(() => {
