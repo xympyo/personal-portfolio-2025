@@ -274,7 +274,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
         {/* Error message */}
         {error && (
           <div className="mt-4 text-red-500 text-base md:text-sm font-light text-center">
-            {error}
+            Something happens! : {error}
           </div>
         )}
 
