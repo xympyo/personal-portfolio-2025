@@ -65,10 +65,10 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
               const defaultAction = mixerRef.current.clipAction(
                 gltf.animations[0]
               );
-              defaultAction.setEffectiveTimeScale(0.5);
+              defaultAction.setEffectiveTimeScale(0.7);
               defaultAction.play();
               actionRef.current = defaultAction;
-              console.log("Started default animation at 0.5 speed");
+              console.log("Started default animation at 0.7 speed");
             } else {
               console.warn("No animations found in the model");
             }
@@ -168,8 +168,8 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         setAnimationSpeed(0.3);
 
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
-        console.log("Setting time scale to 0.3 for complete");
-        action.setEffectiveTimeScale(0.3);
+        console.log("Setting time scale to 0.5 for complete");
+        action.setEffectiveTimeScale(0.5);
         if (actionRef.current) {
           console.log("Stopping previous action");
           actionRef.current.stop();
