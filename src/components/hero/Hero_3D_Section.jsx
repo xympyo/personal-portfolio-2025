@@ -61,10 +61,14 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
             if (gltf.animations && gltf.animations.length > 0) {
               console.log(`Found ${gltf.animations.length} animations`);
 
-              // Don't play animation by default - wait for isProcessing to be true
-              // const action = mixerRef.current.clipAction(gltf.animations[0]);
-              // action.play();
-              // console.log("Playing animation:", gltf.animations[0].name);
+              // Start default animation at 0.5 speed
+              const defaultAction = mixerRef.current.clipAction(
+                gltf.animations[0]
+              );
+              defaultAction.setEffectiveTimeScale(0.5);
+              defaultAction.play();
+              actionRef.current = defaultAction;
+              console.log("Started default animation at 0.5 speed");
             } else {
               console.warn("No animations found in the model");
             }
@@ -141,7 +145,7 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
 
       console.log("Animation state changed:", { isProcessing, isComplete });
       console.log("Current animation speed:", animationSpeed);
-      
+
       if (isProcessing) {
         // Start animation at normal speed
         console.log("Starting animation at normal speed");
@@ -162,7 +166,7 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         // Slow down animation
         console.log("Slowing down animation");
         setAnimationSpeed(0.3);
-        
+
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
         console.log("Setting time scale to 0.3 for complete");
         action.setEffectiveTimeScale(0.3);
@@ -170,7 +174,7 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
           console.log("Stopping previous action");
           actionRef.current.stop();
         }
-        
+
         action.play();
         actionRef.current = action;
         console.log("New action started with time scale:", action.timeScale);
