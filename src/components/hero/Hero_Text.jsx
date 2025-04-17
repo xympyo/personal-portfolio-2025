@@ -284,7 +284,16 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
               Intinya <span>{result?.prediction}</span>
             </p>
             <p>
-              Konteks : <span>{result?.summary}</span>
+              Konteks:{" "}
+              <span
+                className={
+                  result?.prediction?.toLowerCase() === "negative"
+                    ? "text-red-400"
+                    : "text-green-400"
+                }
+              >
+                {result?.summary}
+              </span>
             </p>
           </div>
         )}
