@@ -10,9 +10,19 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const [error, setError] = useState(null);
   const animationsRef = useRef([]);
   const actionRef = useRef(null);
-  const colorMaskRef = useRef(null);
-  const momentumTimerRef = useRef(null);
-  const [animationPhase, setAnimationPhase] = useState("idle"); // idle, momentum, active, drained
+  const animationTimerRef = useRef(null);
+  const [animationPhase, setAnimationPhase] = useState("idle"); // idle, processing, complete
+  const [predictionResult, setPredictionResult] = useState(null); // null, positive, negative
+  const innerSphereRef = useRef(null);
+  const outerSphereRef = useRef(null);
+  const [rotationX, setRotationX] = useState(0);
+  const [rotationY, setRotationY] = useState(0);
+
+  // Load textures
+  const textureLoader = new THREE.TextureLoader();
+  const goldTexture = textureLoader.load("/textures/gold.jpg");
+  const rustTexture = textureLoader.load("/textures/rust.jpg");
+  const scrapTexture = textureLoader.load("/textures/scrap.jpg");
 
   useEffect(() => {
     try {
@@ -41,6 +51,35 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
 
       refContainer.current.appendChild(renderer.domElement);
 
+      // Create inner glowing sphere
+      const innerGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+      const innerMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00ffff, // Cyan blue
+        transparent: true,
+        opacity: 0.8,
+        emissive: 0x00ffff,
+        emissiveIntensity: 1.0,
+      });
+      const innerSphere = new THREE.Mesh(innerGeometry, innerMaterial);
+      innerSphereRef.current = innerSphere;
+      scene.add(innerSphere);
+
+      // Create outer metallic sphere
+      const outerGeometry = new THREE.SphereGeometry(1, 32, 32);
+      const outerMaterial = new THREE.MeshStandardMaterial({
+        color: 0xc0c0c0, // Silver
+        metalness: 0.9,
+        roughness: 0.2,
+        map: goldTexture,
+        normalMap: scrapTexture,
+        normalScale: new THREE.Vector2(0.5, 0.5),
+        aoMap: rustTexture,
+        aoMapIntensity: 0.5,
+      });
+      const outerSphere = new THREE.Mesh(outerGeometry, outerMaterial);
+      outerSphereRef.current = outerSphere;
+      scene.add(outerSphere);
+
       const loader = new GLTFLoader();
       loader.load(
         "/sphere.glb",
@@ -60,53 +99,12 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
             // Create mixer
             mixerRef.current = new THREE.AnimationMixer(sphereRef.current);
 
-            // Create color mask effect
-            const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
-            const maskMaterial = new THREE.ShaderMaterial({
-              uniforms: {
-                color: { value: new THREE.Color(0x00ff00) },
-                opacity: { value: 0.0 },
-                time: { value: 0.0 },
-              },
-              vertexShader: `
-                varying vec2 vUv;
-                varying vec3 vNormal;
-                void main() {
-                  vUv = uv;
-                  vNormal = normal;
-                  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-              `,
-              fragmentShader: `
-                uniform vec3 color;
-                uniform float opacity;
-                uniform float time;
-                varying vec2 vUv;
-                varying vec3 vNormal;
-                void main() {
-                  float pulse = sin(time * 2.0) * 0.5 + 0.5;
-                  float glow = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-                  vec3 finalColor = color * (1.0 + pulse * 0.3);
-                  gl_FragColor = vec4(finalColor, opacity * glow);
-                }
-              `,
-              transparent: true,
-              side: THREE.BackSide,
-            });
-
-            const maskMesh = new THREE.Mesh(sphereGeometry, maskMaterial);
-            maskMesh.scale.set(1.1, 1.1, 1.1); // Slightly larger than the sphere
-            sphereRef.current.add(maskMesh);
-            colorMaskRef.current = maskMesh;
-
             // Check if animations exist
             if (gltf.animations && gltf.animations.length > 0) {
               console.log(`Found ${gltf.animations.length} animations`);
 
-              // Don't play animation by default - wait for isProcessing to be true
-              // const action = mixerRef.current.clipAction(gltf.animations[0]);
-              // action.play();
-              // console.log("Playing animation:", gltf.animations[0].name);
+              // Start the default animation loop
+              startDefaultAnimationLoop();
             } else {
               console.warn("No animations found in the model");
             }
@@ -130,54 +128,43 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       const topLight = new THREE.DirectionalLight(0xffffff, 1);
       topLight.position.set(100, 500, 0);
 
-      // Animation clock for shader effects
-      const clock = new THREE.Clock();
-
       const reRender3D = () => {
         requestAnimationFrame(reRender3D);
+
+        // Update rotation based on animation phase
+        if (animationPhase === "processing") {
+          // Chaotic rotation during processing
+          setRotationX(rotationX + (Math.random() - 0.5) * 0.1);
+          setRotationY(rotationY + (Math.random() - 0.5) * 0.1);
+        } else if (animationPhase === "complete") {
+          // Gradually return to default position
+          setRotationX(rotationX * 0.95);
+          setRotationY(rotationY * 0.95);
+        }
+
+        // Apply rotations to both spheres
+        if (innerSphereRef.current) {
+          innerSphereRef.current.rotation.x = rotationX;
+          innerSphereRef.current.rotation.y = rotationY;
+        }
+
+        if (outerSphereRef.current) {
+          outerSphereRef.current.rotation.x = rotationX;
+          outerSphereRef.current.rotation.y = rotationY;
+        }
+
         if (sphereRef.current) {
-          // Always rotate the sphere, regardless of animation state
-          sphereRef.current.rotation.y += 0.01 * animationSpeed;
+          sphereRef.current.rotation.x = rotationX;
+          sphereRef.current.rotation.y = rotationY;
+
           if (mixerRef.current) {
             mixerRef.current.update(0.02 * animationSpeed);
           }
-
-          // Update color mask effect
-          if (colorMaskRef.current) {
-            const material = colorMaskRef.current.material;
-            material.uniforms.time.value = clock.getElapsedTime();
-
-            // Update opacity based on animation phase
-            if (animationPhase === "idle") {
-              material.uniforms.opacity.value = THREE.MathUtils.lerp(
-                material.uniforms.opacity.value,
-                0.0,
-                0.05
-              );
-            } else if (animationPhase === "momentum") {
-              material.uniforms.opacity.value = THREE.MathUtils.lerp(
-                material.uniforms.opacity.value,
-                0.3,
-                0.1
-              );
-              material.uniforms.color.value.set(0xff0000); // Red during momentum
-            } else if (animationPhase === "active") {
-              material.uniforms.opacity.value = THREE.MathUtils.lerp(
-                material.uniforms.opacity.value,
-                0.7,
-                0.1
-              );
-              material.uniforms.color.value.set(0x00ff00); // Green during active
-            } else if (animationPhase === "drained") {
-              material.uniforms.opacity.value = THREE.MathUtils.lerp(
-                material.uniforms.opacity.value,
-                0.2,
-                0.05
-              );
-              material.uniforms.color.value.set(0x0000ff); // Blue when drained
-            }
-          }
         }
+
+        // Update material effects based on animation phase
+        updateMaterialEffects();
+
         renderer.render(scene, camera);
       };
 
@@ -205,8 +192,8 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
           refContainer.current.removeChild(renderer.domElement);
         }
         renderer.dispose();
-        if (momentumTimerRef.current) {
-          clearTimeout(momentumTimerRef.current);
+        if (animationTimerRef.current) {
+          clearTimeout(animationTimerRef.current);
         }
       };
     } catch (err) {
@@ -214,6 +201,84 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       setError("Error setting up 3D scene");
     }
   }, []);
+
+  // Function to start the default animation loop
+  const startDefaultAnimationLoop = () => {
+    if (!mixerRef.current || !animationsRef.current.length) return;
+
+    // Clear any existing timer
+    if (animationTimerRef.current) {
+      clearTimeout(animationTimerRef.current);
+    }
+
+    // Play the animation
+    if (actionRef.current) {
+      actionRef.current.stop();
+    }
+
+    const action = mixerRef.current.clipAction(animationsRef.current[0]);
+    action.play();
+    actionRef.current = action;
+
+    // Set a timer to stop the animation after a delay
+    animationTimerRef.current = setTimeout(() => {
+      if (actionRef.current) {
+        actionRef.current.stop();
+      }
+
+      // Set a timer to restart the animation after a delay
+      animationTimerRef.current = setTimeout(() => {
+        startDefaultAnimationLoop();
+      }, 1000); // 1 second delay before restarting
+    }, 2000); // 2 seconds of animation before stopping
+  };
+
+  // Function to update material effects based on animation phase
+  const updateMaterialEffects = () => {
+    if (!innerSphereRef.current || !outerSphereRef.current) return;
+
+    const innerMaterial = innerSphereRef.current.material;
+    const outerMaterial = outerSphereRef.current.material;
+
+    if (animationPhase === "idle") {
+      // Default state - silver with cyan inner glow
+      outerMaterial.color.set(0xc0c0c0);
+      outerMaterial.emissive.set(0x000000);
+      outerMaterial.emissiveIntensity = 0;
+
+      innerMaterial.color.set(0x00ffff);
+      innerMaterial.emissive.set(0x00ffff);
+      innerMaterial.emissiveIntensity = 0.8;
+    } else if (animationPhase === "processing") {
+      // Processing state - brighter with increased glow
+      outerMaterial.color.set(0xd0d0d0);
+      outerMaterial.emissive.set(0x404040);
+      outerMaterial.emissiveIntensity = 0.3;
+
+      innerMaterial.color.set(0x00ffff);
+      innerMaterial.emissive.set(0x00ffff);
+      innerMaterial.emissiveIntensity = 1.0;
+    } else if (animationPhase === "complete") {
+      // Complete state - color based on prediction result
+      outerMaterial.color.set(0xc0c0c0);
+      outerMaterial.emissive.set(0x000000);
+      outerMaterial.emissiveIntensity = 0;
+
+      if (predictionResult === "positive") {
+        innerMaterial.color.set(0x00ff00);
+        innerMaterial.emissive.set(0x00ff00);
+        innerMaterial.emissiveIntensity = 1.0;
+      } else if (predictionResult === "negative") {
+        innerMaterial.color.set(0xff0000);
+        innerMaterial.emissive.set(0xff0000);
+        innerMaterial.emissiveIntensity = 1.0;
+      } else {
+        innerMaterial.color.set(0x00ffff);
+        innerMaterial.emissive.set(0x00ffff);
+        innerMaterial.emissiveIntensity = 0.8;
+      }
+    }
+  };
 
   // Control animation based on processing state
   useEffect(() => {
@@ -226,54 +291,62 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       console.log("Animation state changed:", { isProcessing, isComplete });
 
       if (isProcessing) {
-        // Start with momentum phase (counter-clockwise)
-        console.log("Starting momentum phase");
-        setAnimationPhase("momentum");
-        setAnimationSpeed(-0.5); // Counter-clockwise rotation
+        // Processing state - chaotic rotation
+        console.log("Entering processing state");
+        setAnimationPhase("processing");
+        setAnimationSpeed(1);
 
-        // Clear any existing timer
-        if (momentumTimerRef.current) {
-          clearTimeout(momentumTimerRef.current);
+        // Stop the default animation loop
+        if (animationTimerRef.current) {
+          clearTimeout(animationTimerRef.current);
         }
-
-        // After a short delay, switch to active phase
-        momentumTimerRef.current = setTimeout(() => {
-          console.log("Switching to active phase");
-          setAnimationPhase("active");
-          setAnimationSpeed(1); // Normal clockwise rotation
-
-          if (actionRef.current) {
-            actionRef.current.stop();
-          }
-
-          const action = mixerRef.current.clipAction(animationsRef.current[0]);
-          action.play();
-          actionRef.current = action;
-        }, 800); // 800ms for momentum phase
-      } else if (isComplete) {
-        // Power drained phase
-        console.log("Entering power drained phase");
-        setAnimationPhase("drained");
-        setAnimationSpeed(0.1); // Very slow rotation
 
         if (actionRef.current) {
           actionRef.current.stop();
         }
+
+        // Play the animation at normal speed
+        const action = mixerRef.current.clipAction(animationsRef.current[0]);
+        action.play();
+        actionRef.current = action;
+      } else if (isComplete) {
+        // Complete state - return to default position
+        console.log("Entering complete state");
+        setAnimationPhase("complete");
+        setAnimationSpeed(1);
+
+        // Stop the current animation
+        if (actionRef.current) {
+          actionRef.current.stop();
+        }
+
+        // Start the default animation loop
+        startDefaultAnimationLoop();
       } else {
-        // Return to idle
+        // Idle state - default animation loop
         console.log("Returning to idle state");
         setAnimationPhase("idle");
         setAnimationSpeed(1);
+        setPredictionResult(null);
 
-        if (actionRef.current) {
-          actionRef.current.stop();
-          actionRef.current = null;
-        }
+        // Start the default animation loop
+        startDefaultAnimationLoop();
       }
     } catch (err) {
       console.error("Error controlling animation:", err);
     }
   }, [isProcessing, isComplete]);
+
+  // Update prediction result when API response is received
+  useEffect(() => {
+    if (isComplete && sphereRef.current) {
+      // This is where you would check the API response
+      // For now, we'll simulate a random result
+      const result = Math.random() > 0.5 ? "positive" : "negative";
+      setPredictionResult(result);
+      console.log("Prediction result:", result);
+    }
+  }, [isComplete]);
 
   return (
     <div className="absolute inset-0 w-full h-full z-[-1]">
