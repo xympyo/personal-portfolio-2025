@@ -9,13 +9,13 @@ const Footer = () => {
           <p className="text-secondary text-small">Moshe Dayan</p>
         </div>
         <div className="flex justify-center md:justify-between mt-4 gap-4">
-          <a href="https://github.com/xympyo">
+          <a href="https://github.com/xympyo" target="_blank">
             <img src="/icons/github.svg" alt="" className="w-6 h-6" />
           </a>
-          <a href="https://www.linkedin.com/in/moshedayan/">
+          <a href="https://www.linkedin.com/in/moshedayan/" target="_blank">
             <img src="/icons/linkedin.svg" alt="" className="w-6 h-6" />
           </a>
-          <a href="https://www.instagram.com/moshe_dyn/">
+          <a href="https://www.instagram.com/moshe_dyn/" target="_blank">
             <img src="/icons/instagram.svg" alt="" className="w-6 h-6" />
           </a>
           <a

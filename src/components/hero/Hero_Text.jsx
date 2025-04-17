@@ -230,7 +230,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
       <div className="flex flex-col items-center mt-24 mx-auto px-4">
         <div className="flex flex-col items-center">
           <h1 className="text-secondary text-2xl md:text-2xl overflow-y-hidden font-medium text-center">
-            "Voice Note should have NSFW System."
+            "Can I even play this Voice Note in front of my mom?"
           </h1>
           <p className="text-secondary text-lg md:text-base font-light text-left mt-4">
             - Moshe, after hearing 8 harmful words,
@@ -241,10 +241,11 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
           <p className="text-secondary text-lg md:text-lg font-normal text-center mt-4">
             Submit your Voice Note below,
             <br />
-            and we will summarize it, and tell you if it is Safe For Work (SFW.)
+            and we will summarize it, and tell you if it is you can play it in
+            front of anyone.
           </p>
           <p className="text-secondary text-base md:text-base font-normal text-left mt-4">
-            The voice note should be in Indonesia
+            The voice note should be in Indonesia language (Bahasa).
           </p>
         </div>
 
