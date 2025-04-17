@@ -280,10 +280,8 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
         {/* Optional: Output */}
         {result && (
           <div className="mt-4 text-secondary text-xs md:text-small font-light text-center w-full">
-            <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-60">
-              <p>Intinya {result?.prediction}</p>
-              <p>Konteks : {result?.summary}</p>
-            </pre>
+            <p>Intinya {result?.prediction}</p>
+            <p>Konteks : {result?.summary}</p>
           </div>
         )}
       </div>
