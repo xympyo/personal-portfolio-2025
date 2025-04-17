@@ -243,7 +243,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             <br />
             and we will summarize it, and tell you if it is Safe For Work (SFW.)
           </p>
-          <p className="text-secondary text-sm md:text-small font-normal text-left mt-2">
+          <p className="text-secondary text-sm md:text-small font-normal text-left mt-4 overflow-y-hidden">
             The voice note should be in Indonesia
           </p>
         </div>
