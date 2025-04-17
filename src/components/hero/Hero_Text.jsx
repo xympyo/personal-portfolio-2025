@@ -243,6 +243,9 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             <br />
             and we will summarize it, and tell you if it is Safe For Work (SFW.)
           </p>
+          <p className="text-secondary text-sm md:text-small font-normal text-left mt-2">
+            The voice note should be in Indonesia
+          </p>
         </div>
 
         <div className="mt-12 w-full max-w-md">
@@ -278,7 +281,8 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
         {result && (
           <div className="mt-4 text-secondary text-xs md:text-small font-light text-center w-full">
             <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-60">
-              {JSON.stringify(result, null, 2)}
+              <p>Intinya {result?.prediction}</p>
+              <p>Konteks : {result?.summary}</p>
             </pre>
           </div>
         )}
