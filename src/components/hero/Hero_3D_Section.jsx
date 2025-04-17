@@ -10,6 +10,9 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
   const [error, setError] = useState(null);
   const animationsRef = useRef([]);
   const actionRef = useRef(null);
+  const colorMaskRef = useRef(null);
+  const momentumTimerRef = useRef(null);
+  const [animationPhase, setAnimationPhase] = useState("idle"); // idle, momentum, active, drained
 
   useEffect(() => {
     try {
@@ -57,6 +60,45 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
             // Create mixer
             mixerRef.current = new THREE.AnimationMixer(sphereRef.current);
 
+            // Create color mask effect
+            const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+            const maskMaterial = new THREE.ShaderMaterial({
+              uniforms: {
+                color: { value: new THREE.Color(0x00ff00) },
+                opacity: { value: 0.0 },
+                time: { value: 0.0 },
+              },
+              vertexShader: `
+                varying vec2 vUv;
+                varying vec3 vNormal;
+                void main() {
+                  vUv = uv;
+                  vNormal = normal;
+                  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+              `,
+              fragmentShader: `
+                uniform vec3 color;
+                uniform float opacity;
+                uniform float time;
+                varying vec2 vUv;
+                varying vec3 vNormal;
+                void main() {
+                  float pulse = sin(time * 2.0) * 0.5 + 0.5;
+                  float glow = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+                  vec3 finalColor = color * (1.0 + pulse * 0.3);
+                  gl_FragColor = vec4(finalColor, opacity * glow);
+                }
+              `,
+              transparent: true,
+              side: THREE.BackSide,
+            });
+
+            const maskMesh = new THREE.Mesh(sphereGeometry, maskMaterial);
+            maskMesh.scale.set(1.1, 1.1, 1.1); // Slightly larger than the sphere
+            sphereRef.current.add(maskMesh);
+            colorMaskRef.current = maskMesh;
+
             // Check if animations exist
             if (gltf.animations && gltf.animations.length > 0) {
               console.log(`Found ${gltf.animations.length} animations`);
@@ -88,6 +130,9 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       const topLight = new THREE.DirectionalLight(0xffffff, 1);
       topLight.position.set(100, 500, 0);
 
+      // Animation clock for shader effects
+      const clock = new THREE.Clock();
+
       const reRender3D = () => {
         requestAnimationFrame(reRender3D);
         if (sphereRef.current) {
@@ -95,6 +140,42 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
           sphereRef.current.rotation.y += 0.01 * animationSpeed;
           if (mixerRef.current) {
             mixerRef.current.update(0.02 * animationSpeed);
+          }
+
+          // Update color mask effect
+          if (colorMaskRef.current) {
+            const material = colorMaskRef.current.material;
+            material.uniforms.time.value = clock.getElapsedTime();
+
+            // Update opacity based on animation phase
+            if (animationPhase === "idle") {
+              material.uniforms.opacity.value = THREE.MathUtils.lerp(
+                material.uniforms.opacity.value,
+                0.0,
+                0.05
+              );
+            } else if (animationPhase === "momentum") {
+              material.uniforms.opacity.value = THREE.MathUtils.lerp(
+                material.uniforms.opacity.value,
+                0.3,
+                0.1
+              );
+              material.uniforms.color.value.set(0xff0000); // Red during momentum
+            } else if (animationPhase === "active") {
+              material.uniforms.opacity.value = THREE.MathUtils.lerp(
+                material.uniforms.opacity.value,
+                0.7,
+                0.1
+              );
+              material.uniforms.color.value.set(0x00ff00); // Green during active
+            } else if (animationPhase === "drained") {
+              material.uniforms.opacity.value = THREE.MathUtils.lerp(
+                material.uniforms.opacity.value,
+                0.2,
+                0.05
+              );
+              material.uniforms.color.value.set(0x0000ff); // Blue when drained
+            }
           }
         }
         renderer.render(scene, camera);
@@ -124,6 +205,9 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
           refContainer.current.removeChild(renderer.domElement);
         }
         renderer.dispose();
+        if (momentumTimerRef.current) {
+          clearTimeout(momentumTimerRef.current);
+        }
       };
     } catch (err) {
       console.error("Error in 3D setup:", err);
@@ -142,26 +226,45 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       console.log("Animation state changed:", { isProcessing, isComplete });
 
       if (isProcessing) {
-        // Start animation at normal speed
-        console.log("Starting animation at normal speed");
-        setAnimationSpeed(1);
-        
+        // Start with momentum phase (counter-clockwise)
+        console.log("Starting momentum phase");
+        setAnimationPhase("momentum");
+        setAnimationSpeed(-0.5); // Counter-clockwise rotation
+
+        // Clear any existing timer
+        if (momentumTimerRef.current) {
+          clearTimeout(momentumTimerRef.current);
+        }
+
+        // After a short delay, switch to active phase
+        momentumTimerRef.current = setTimeout(() => {
+          console.log("Switching to active phase");
+          setAnimationPhase("active");
+          setAnimationSpeed(1); // Normal clockwise rotation
+
+          if (actionRef.current) {
+            actionRef.current.stop();
+          }
+
+          const action = mixerRef.current.clipAction(animationsRef.current[0]);
+          action.play();
+          actionRef.current = action;
+        }, 800); // 800ms for momentum phase
+      } else if (isComplete) {
+        // Power drained phase
+        console.log("Entering power drained phase");
+        setAnimationPhase("drained");
+        setAnimationSpeed(0.1); // Very slow rotation
+
         if (actionRef.current) {
           actionRef.current.stop();
         }
-        
-        const action = mixerRef.current.clipAction(animationsRef.current[0]);
-        action.play();
-        actionRef.current = action;
-      } else if (isComplete) {
-        // Slow down animation
-        console.log("Slowing down animation");
-        setAnimationSpeed(0.3);
       } else {
-        // Stop animation but keep rotating
-        console.log("Stopping animation, keeping rotation");
+        // Return to idle
+        console.log("Returning to idle state");
+        setAnimationPhase("idle");
         setAnimationSpeed(1);
-        
+
         if (actionRef.current) {
           actionRef.current.stop();
           actionRef.current = null;
@@ -174,10 +277,7 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
 
   return (
     <div className="absolute inset-0 w-full h-full z-[-1]">
-      <div
-        ref={refContainer}
-        className="w-full h-full"
-      ></div>
+      <div ref={refContainer} className="w-full h-full"></div>
       {error && (
         <div className="absolute top-4 left-4 bg-red-500 text-white p-2 rounded">
           {error}
