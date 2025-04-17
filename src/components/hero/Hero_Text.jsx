@@ -9,8 +9,6 @@ const API_KEY = "A}{ctxYq{1+NYa-YaU@I";
 const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const [apiStatus, setApiStatus] = useState("Checking...");
-
   // Test API connection on component mount
   useEffect(() => {
     const testApiConnection = async () => {
@@ -49,18 +47,14 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
               if (testResponse.ok) {
                 const testData = await testResponse.json();
                 console.log("API test endpoint response:", testData);
-                setApiStatus("API is fully accessible");
               } else {
                 console.error("API test endpoint failed:", testResponse.status);
-                setApiStatus("API base is accessible, but endpoints are not");
               }
             } catch (testErr) {
               console.error("API test endpoint error:", testErr);
-              setApiStatus("API base is accessible, but endpoints are not");
             }
           } else {
             console.log("API is accessible (normal response)");
-            setApiStatus("API is accessible");
           }
         } catch (noCorsErr) {
           console.error("No-cors request failed:", noCorsErr);
@@ -82,19 +76,15 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             if (proxyResponse.ok) {
               const data = await proxyResponse.json();
               console.log("Proxy API test response:", data);
-              setApiStatus("API is accessible via proxy");
             } else {
               console.error("Proxy API test failed:", proxyResponse.status);
-              setApiStatus("API is not accessible - Using fallback mode");
             }
           } catch (proxyErr) {
             console.error("Proxy request failed:", proxyErr);
-            setApiStatus("API is not accessible - Using fallback mode");
           }
         }
       } catch (err) {
         console.error("API test failed:", err);
-        setApiStatus("API is not accessible - Using fallback mode");
       }
     };
 
@@ -253,11 +243,6 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             <br />
             and we will summarize it, and tell you if it is Safe For Work (SFW.)
           </p>
-        </div>
-
-        {/* API Status */}
-        <div className="mt-4 text-xs text-gray-500">
-          API Status: {apiStatus}
         </div>
 
         <div className="mt-12 w-full max-w-md">

@@ -34,21 +34,21 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         if (processingElapsedTime < 500) {
           // First 0.5 seconds of processing
           // Reverse rotation
-          sphereRef.current.rotation.y -= ySpeed * animationSpeed;
+          sphereRef.current.rotation.y = ySpeed;
         } else {
           // Normal rotation after 0.5 seconds
-          sphereRef.current.rotation.y += ySpeed * animationSpeed;
+          sphereRef.current.rotation.y = ySpeed;
         }
       } else {
         // Normal rotation in all other cases
-        sphereRef.current.rotation.y += ySpeed * animationSpeed;
-        sphereRef.current.rotation.x += xSpeed * animationSpeed;
+        sphereRef.current.rotation.y = ySpeed;
+        sphereRef.current.rotation.x = xSpeed;
       }
 
       lastRotationTimeRef.current = currentTime;
 
       if (mixerRef.current) {
-        mixerRef.current.update(0.02 * animationSpeed);
+        mixerRef.current.update(0.02);
       }
       rendererRef.current.render(sceneRef.current, cameraRef.current);
     }
@@ -85,52 +85,32 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       refContainer.current.appendChild(renderer.domElement);
 
       const loader = new GLTFLoader();
-      loader.load(
-        "/sphere.glb",
-        function (gltf) {
-          try {
-            console.log("3D model loaded successfully");
-            sphereRef.current = gltf.scene;
-            scene.add(sphereRef.current);
+      loader.load("/sphere.glb", function (gltf) {
+        try {
+          sphereRef.current = gltf.scene;
+          scene.add(sphereRef.current);
 
-            // Store animations for later use
-            animationsRef.current = gltf.animations;
-            console.log(
-              `Found ${gltf.animations.length} animations:`,
-              gltf.animations
+          // Store animations for later use
+          animationsRef.current = gltf.animations;
+
+          // Create mixer
+          mixerRef.current = new THREE.AnimationMixer(sphereRef.current);
+
+          // Check if animations exist
+          if (gltf.animations && gltf.animations.length > 0) {
+            // Start default animation at 0.5 speed
+            const defaultAction = mixerRef.current.clipAction(
+              gltf.animations[0]
             );
-
-            // Create mixer
-            mixerRef.current = new THREE.AnimationMixer(sphereRef.current);
-
-            // Check if animations exist
-            if (gltf.animations && gltf.animations.length > 0) {
-              console.log(`Found ${gltf.animations.length} animations`);
-
-              // Start default animation at 0.5 speed
-              const defaultAction = mixerRef.current.clipAction(
-                gltf.animations[0]
-              );
-              defaultAction.setEffectiveTimeScale(0.7);
-              defaultAction.play();
-              actionRef.current = defaultAction;
-              console.log("Started default animation at 0.7 speed");
-            } else {
-              console.warn("No animations found in the model");
-            }
-          } catch (err) {
-            console.error("Error setting up 3D model:", err);
-            setError("Error setting up 3D model");
+            defaultAction.setEffectiveTimeScale(animationSpeed);
+            defaultAction.play();
+            actionRef.current = defaultAction;
           }
-        },
-        function (xhr) {
-          console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-        },
-        function (error) {
-          console.error("Error loading model:", error);
-          setError("Error loading 3D model");
+        } catch (err) {
+          console.error("Error setting up 3D model:", err);
+          setError("Error setting up 3D model");
         }
-      );
+      });
 
       const ambientLight = new THREE.AmbientLight(0xffffff, 1.125);
       scene.add(ambientLight);
@@ -177,61 +157,50 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         return;
       }
 
-      console.log("Animation state changed:", { isProcessing, isComplete });
-      console.log("Current animation speed:", animationSpeed);
-
       if (isProcessing) {
         // Start animation at normal speed
-        console.log("Starting animation at normal speed");
-        setAnimationSpeed(1.25);
-        setXSpeed(1);
-        setYSpeed(1);
+        setAnimationSpeed(0.5);
+        setXSpeed(0.5);
+        setYSpeed(0.5);
+
         processingStartTimeRef.current = Date.now();
         lastRotationTimeRef.current = Date.now();
 
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
-        console.log("Setting time scale to 1 for processing");
         action.setEffectiveTimeScale(animationSpeed);
         if (actionRef.current) {
-          console.log("Stopping previous action");
           actionRef.current.stop();
         }
 
         action.play();
         actionRef.current = action;
-        console.log("New action started with time scale:", action.timeScale);
       } else if (isComplete) {
         // Slow down animation
-        console.log("Slowing down animation");
         setAnimationSpeed(0.3);
+        setXSpeed(0);
+        setYSpeed(0.1);
 
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
-        console.log("Setting time scale to 0.3 for complete");
         action.setEffectiveTimeScale(animationSpeed);
         if (actionRef.current) {
-          console.log("Stopping previous action");
           actionRef.current.stop();
         }
 
         action.play();
         actionRef.current = action;
-        console.log("New action started with time scale:", action.timeScale);
       } else {
-        // Return to default speed (0.5)
-        console.log("Returning to default speed");
         setAnimationSpeed(0.75);
+        setXSpeed(0);
+        setYSpeed(0.5);
 
         const action = mixerRef.current.clipAction(animationsRef.current[0]);
-        console.log("Setting time scale to 0.5 for default");
         action.setEffectiveTimeScale(animationSpeed);
         if (actionRef.current) {
-          console.log("Stopping previous action");
           actionRef.current.stop();
         }
 
         action.play();
         actionRef.current = action;
-        console.log("New action started with time scale:", action.timeScale);
       }
     } catch (err) {
       console.error("Error controlling animation:", err);
