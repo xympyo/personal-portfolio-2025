@@ -77,13 +77,13 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
       var scene = new THREE.Scene();
       sceneRef.current = scene;
       var camera = new THREE.PerspectiveCamera(
-        window.innerWidth <= 768 ? 28 : 20,
+        window.innerWidth <= 834 ? 36 : 20,
         window.innerWidth / window.innerHeight,
         0.1,
         1000
       );
       cameraRef.current = camera;
-      camera.position.z = 12;
+      camera.position.z = 10;
       const renderer = new THREE.WebGLRenderer({ alpha: true });
       rendererRef.current = renderer;
 
@@ -129,10 +129,10 @@ const Hero_3D_Section = ({ isProcessing, isComplete }) => {
         }
       });
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.125);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 12);
       scene.add(ambientLight);
 
-      const topLight = new THREE.DirectionalLight(0xffffff, 1);
+      const topLight = new THREE.DirectionalLight(0xffffff, 8);
       topLight.position.set(100, 500, 0);
 
       reRender3D();

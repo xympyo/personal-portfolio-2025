@@ -227,7 +227,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col items-center mt-24 mx-auto px-4">
+      <div className="flex flex-col items-center mt-12 sm:mt-24 mx-auto px-4">
         <div className="flex flex-col items-center">
           <h1 className="text-secondary text-2xl md:text-2xl overflow-y-hidden font-medium text-center">
             "Can I even play this Voice Note in front of my mom?"

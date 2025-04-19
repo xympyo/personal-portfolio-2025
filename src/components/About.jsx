@@ -18,11 +18,11 @@ const About = () => {
             <div className="col-span-3 lg:col-span-1"></div>
           </div>
           <div className="flex flex-col items-start w-full lg:w-auto">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-2">
               <h1 className="text-xl md:text-xl text-secondary overflow-y-hidden">
                 hey, Moshe here!
               </h1>
-              <p className="text-base md:text-base font-light ">
+              <p className="text-sm md:text-base font-light ">
                 At the time of developing this portfolio, I'm a 5th-semester
                 Informatics student at President University, soon entering my
                 6th semester. I have a strong foundation in digital design,
