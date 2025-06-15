@@ -194,7 +194,7 @@ export default function DecryptedText({
   return (
     <motion.span
       ref={containerRef}
-      className={`overflow-y-hidden inline-block whitespace-pre-wrap ${parentClassName}`}
+      className={`overflow-y-hidden text-center inline-block whitespace-pre-wrap ${parentClassName}`}
       {...hoverProps}
       {...props}
     >

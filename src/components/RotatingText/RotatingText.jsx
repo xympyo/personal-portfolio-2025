@@ -160,7 +160,7 @@ const RotatingText = forwardRef((props, ref) => {
   return (
     <motion.span
       className={cn(
-        "flex flex-wrap whitespace-pre-wrap relative",
+        "flex flex-wrap whitespace-pre-wrap relative overflow-y-hidden",
         mainClassName
       )}
       {...rest}
@@ -168,13 +168,16 @@ const RotatingText = forwardRef((props, ref) => {
       transition={transition}
     >
       <span className="sr-only">{texts[currentTextIndex]}</span>
-      <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
+      <AnimatePresence
+        mode={animatePresenceMode}
+        initial={animatePresenceInitial}
+      >
         <motion.div
           key={currentTextIndex}
           className={cn(
             splitBy === "lines"
-              ? "flex flex-col w-full"
-              : "flex flex-wrap whitespace-pre-wrap relative"
+              ? "flex flex-col w-full overflow-y-hidden"
+              : "flex flex-wrap whitespace-pre-wrap relative overflow-y-hidden"
           )}
           layout
           aria-hidden="true"
@@ -184,7 +187,13 @@ const RotatingText = forwardRef((props, ref) => {
               .slice(0, wordIndex)
               .reduce((sum, word) => sum + word.characters.length, 0);
             return (
-              <span key={wordIndex} className={cn("inline-flex", splitLevelClassName)}>
+              <span
+                key={wordIndex}
+                className={cn(
+                  "inline-flex overflow-y-hidden",
+                  splitLevelClassName
+                )}
+              >
                 {wordObj.characters.map((char, charIndex) => (
                   <motion.span
                     key={charIndex}
@@ -195,15 +204,23 @@ const RotatingText = forwardRef((props, ref) => {
                       ...transition,
                       delay: getStaggerDelay(
                         previousCharsCount + charIndex,
-                        array.reduce((sum, word) => sum + word.characters.length, 0)
+                        array.reduce(
+                          (sum, word) => sum + word.characters.length,
+                          0
+                        )
                       ),
                     }}
-                    className={cn("inline-block", elementLevelClassName)}
+                    className={cn(
+                      "inline-block overflow-y-hidden",
+                      elementLevelClassName
+                    )}
                   >
                     {char}
                   </motion.span>
                 ))}
-                {wordObj.needsSpace && <span className="whitespace-pre"> </span>}
+                {wordObj.needsSpace && (
+                  <span className="whitespace-pre"> </span>
+                )}
               </span>
             );
           })}
