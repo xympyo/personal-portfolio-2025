@@ -15,7 +15,7 @@ const Projects = () => {
         <h1 className="text-lg md:text-2xl text-center mb-2 overflow-y-hidden">
           my projects
         </h1>
-        <div className="flex">
+        <div className="flex flex-col relative">
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 grid-flow-dense w-full">
             <div className="flex row-span-1 sm:row-span-2">
               <div className="col-span-1"></div>
@@ -175,6 +175,11 @@ const Projects = () => {
                 </div>
               </a>
             </div>
+          </div>
+          <div className="flex justify-end mt-2">
+            <a href="projects" className="cursor-pointer">
+              {`>`} See more here...
+            </a>
           </div>
         </div>
       </div>

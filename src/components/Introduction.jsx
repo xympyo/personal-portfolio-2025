@@ -29,11 +29,11 @@ function Introduction() {
         className="flex flex-col"
       >
         <DecryptedText
-          text="Moshe Dayan"
+          text="Hi, my name is Moshe Dayan"
           animateOn="view"
           revealDirection="center"
           className="md:text-lg text-sm font-light text-[#404040]"
-          speed={8}
+          speed={20}
           maxIterations={40}
           sequential={true}
         ></DecryptedText>
@@ -44,7 +44,7 @@ function Introduction() {
           <RotatingText
             texts={[
               "Web Development",
-              "Software Development",
+              "Mobile Development",
               "Backend Development",
               "Artificial Intelligence",
             ]}

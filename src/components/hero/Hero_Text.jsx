@@ -229,22 +229,22 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
     <div className="flex justify-center">
       <div className="flex flex-col items-center mt-12 sm:mt-24 mx-auto px-4">
         <div className="flex flex-col items-center">
-          <h1 className="text-secondary text-2xl md:text-2xl overflow-y-hidden font-medium text-center">
+          <h1 className="text-secondary text-lg md:text-2xl overflow-y-hidden font-medium text-center">
             "Can I even play this Voice Note in front of my mom?"
           </h1>
-          <p className="text-secondary text-lg md:text-base font-light text-left mt-4">
+          <p className="text-secondary text-sm md:text-base font-light text-left mt-2 md:mt-4">
             - Moshe, after hearing 8 harmful words,
             <br />2 mentioning cigarettes, in front of his mom.
           </p>
         </div>
         <div className="flex-col justify-center">
-          <p className="text-secondary text-lg md:text-lg font-normal text-center mt-4">
+          <p className="text-secondary text-md md:text-lg font-normal text-center mt-2 md:mt-4">
             Submit your Voice Note below,
             <br />
             and we will summarize it, and tell you if it is you can play it in
             front of anyone.
           </p>
-          <p className="text-secondary text-base md:text-base font-normal text-left mt-4">
+          <p className="text-secondary text-sm md:text-base font-normal text-left mt-4">
             The voice note should be in Indonesia language (Bahasa).
           </p>
         </div>

@@ -1,20 +1,15 @@
 import React from "react";
-import Navigation_Bar from "./components/Navigation_Bar";
-import Hero_Section from "./components/Hero_Section";
-import Projects from "./components/Projects";
-import About from "./components/About";
-import Footer from "./components/Footer";
-import Introduction from "./components/Introduction";
+import { Routes, Route } from "react-router-dom";
+import HomeLayout from "./HomeLayout";
+import ProjectsLayout from "./ProjectsLayout";
 
 const App = () => {
   return (
     <div>
-      <Introduction></Introduction>
-      <Navigation_Bar></Navigation_Bar>
-      <Hero_Section></Hero_Section>
-      <Projects></Projects>
-      <About></About>
-      <Footer></Footer>
+      <Routes>
+        <Route path="/" element={<HomeLayout />} />
+        <Route path="/projects" element={<ProjectsLayout />} />
+      </Routes>
     </div>
   );
 };
