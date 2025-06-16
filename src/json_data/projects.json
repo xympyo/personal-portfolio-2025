@@ -1,26 +1,32 @@
 [
   {
     "title": "Final WMP",
-    "image": "final_wmp.jpg"
+    "image": "final_wmp.png",
+    "description": "An application that uses mainly database and really just to see our grasps on Firebase"
   },
   {
     "title": "Spacepal",
-    "image": "spacepal.jpg"
+    "image": "spacepal.png",
+    "description": "Spacepal is a project built for children to learn, our main objective is to plant the spark of learning to children, growing their curiosity from the beginning.\nThis project won an award from FINPROTION 2025 held by PUMA Informatics 2025, signed by our Head of Study Ma'am Rosalina and is judged by the well being of projects, with our deans as the judges.\nI actually find a lot of enjoyment doing this project, and coding in Flutter has been great, until, I see Firebase and how messed up it is."
   },
   {
     "title": "Komplenifas",
-    "image": "komplenifas.jpg"
+    "image": "komplenifas.png",
+    "description": "Komplenifas is a flipbook based education website, it is a real working experience project by a client doing their Magister in Medicine, and would like to share what they have researched into a flipbook based website.\nI used Vanilla HTML5 and CSS combined with Bootstrap."
   },
   {
-    "title": "SSIP",
-    "image": "ssip.jpg"
+    "title": "SSIP Cepi's cafe",
+    "image": "ssip.png",
+    "description": "Cepi's Cafe is a website built using Laravel Framework and SQL as it's database, it uses Bootstrap 5.3 as it's styling choice, with complex database and took 2 weeks of non stop coding to complete alone."
   },
   {
     "title": "Prediver",
-    "image": "prediver.jpg"
+    "image": "ai_prediver.png",
+    "description": "Prediver is a software built using Flutter Dart, with Flask Python API as it's backend.\nIt predicts fever based on user input by calling API from Flask Python API, and will results on percentage whether or not the user has fever.\nIt wins an award from FINPROTION 2025 held by PUMA as well, competing against many other projects against my batch."
   },
   {
     "title": "Budi NLUG",
-    "image": "budi_nlug.jpg"
+    "image": "budi_nlug.png",
+    "description": "Budi is a software that is built with Flutter Dart, the special part about Budi is that it's an AI Chatbot Application that is built using DialoGPT, with Scientific Question Answering Dataset on Kaggle.\nThe project is done on our AI Class, in NLUG Subject (Natural Language Understanding and Generating)"
   }
 ]
