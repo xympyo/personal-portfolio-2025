@@ -18,7 +18,7 @@ const ProjectDetails = () => {
   };
 
   return (
-    <div className="mx-5 mt-4">
+    <div className="mx-5 mt-4 h-dvh">
       <div className="flex flex-col items-center">
         <p className="text-lg md:text-xl mb-6 text-[#404040]"> My Projects</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-7xl">
