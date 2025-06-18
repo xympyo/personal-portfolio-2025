@@ -9,13 +9,13 @@ const About = () => {
         <h1 className="text-secondary text-2xl md:text-2xl text-center mb-2 overflow-y-hidden">
           about me
         </h1>
-        <div className="flex flex-col lg:flex-row gap-5 px-4 lg:px-10 w-full">
+        <div className="flex flex-row mt-8 lg:flex-row gap-5 px-4 lg:px-10 w-full">
           <div className="grid grid-cols-12">
-            <div className="col-span-3 lg:col-span-1"></div>
-            <div className="col-span-6 lg:col-span-10">
+            <div className="col-span-3 lg:col-span-3"></div>
+            <div className="col-span-6 lg:col-span-7">
               <img src={photoFrame} alt="" className="md:w-full lg:w-auto" />
             </div>
-            <div className="col-span-3 lg:col-span-1"></div>
+            <div className="col-span-3 lg:col-span-2"></div>
           </div>
           <div className="flex flex-col items-start w-full lg:w-auto">
             <div className="flex flex-col gap-2">
