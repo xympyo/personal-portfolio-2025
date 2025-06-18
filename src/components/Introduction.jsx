@@ -2,6 +2,7 @@ import React from "react";
 import DotGrid from "./DotGrid/DotGrid";
 import DecryptedText from "./DecryptedText/DecryptedText";
 import RotatingText from "./RotatingText/RotatingText";
+import Magnet from "./Magnet/Magnet";
 
 function Introduction() {
   return (
@@ -52,6 +53,24 @@ function Introduction() {
             splitBy="characters"
             mainClassName="text-[#1d1d1d] font-bold md:text-sm text-xs bg-[#54fed5] py-1 px-2 rounded-lg"
           ></RotatingText>
+        </div>
+        <div className="flex flex-column justify-center align-middle">
+          <Magnet
+            magnetStrength={32}
+            padding={120}
+            wrapperClassName="p-6 rounded-lg"
+            children={
+              <a
+                href="/MosheDayan_CV.pdf"
+                download="MosheDayan_CV.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-[#54fed5] bg-[#1d1d1d] rounded-lg"
+              >
+                Get my CV
+              </a>
+            }
+          ></Magnet>
         </div>
       </div>
     </div>
