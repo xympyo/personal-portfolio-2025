@@ -6,7 +6,7 @@ import Projects from "./components/Projects";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import Introduction from "./components/Introduction";
-import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const HomeLayout = () => {
   return (
@@ -17,7 +17,7 @@ const HomeLayout = () => {
       <Projects />
       <About />
       <Footer />
-      <Analytics />
+      <SpeedInsights />
     </div>
   );
 };
