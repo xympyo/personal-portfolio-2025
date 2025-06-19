@@ -4,10 +4,12 @@ import "./index.css";
 import App from "./App.jsx";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <App />
+    <SpeedInsights />
   </BrowserRouter>
 );
