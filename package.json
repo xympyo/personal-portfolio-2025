@@ -13,8 +13,9 @@
     "@vercel/analytics": "^1.5.0",
     "framer-motion": "^12.17.0",
     "gsap": "^3.13.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "next": "^15.3.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
     "three": "^0.177.0"
   },
