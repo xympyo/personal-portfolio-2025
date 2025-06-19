@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import upload_icon from "../../assets/upload_icon.png";
+import { motion } from "framer-motion"; // <-- Import motion here!
 
 // API configuration
 const API_URL =
@@ -9,6 +10,29 @@ const API_KEY = "A}{ctxYq{1+NYa-YaU@I";
 const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+
+  // Define variants for the container and its children
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Delay between each child's animation
+        delayChildren: 0.2, // Initial delay for the first child
+      },
+    },
+  };
+
+  // Define variants for individual child items
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 }, // Start invisible and slightly below
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
+    }, // Animate to visible and original position
+  };
+
   // Test API connection on component mount
   useEffect(() => {
     const testApiConnection = async () => {
@@ -61,7 +85,7 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
 
           // Try with CORS proxy
           console.log("Trying with CORS proxy...");
-          const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+          const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Note: This proxy is public and may have rate limits
           const targetUrl =
             "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/";
 
@@ -170,14 +194,14 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
 
         // If direct connection fails, try with CORS proxy
         console.log("Trying with CORS proxy...");
-        const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+        const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Use with caution, public proxy
         const targetUrl = API_URL;
 
         const proxyResponse = await fetch(proxyUrl + targetUrl, {
           method: "POST",
           headers: {
             "x-api-key": API_KEY,
-            Origin: "https://moshedyn.vercel.app",
+            Origin: "https://moshedyn.vercel.app", // Ensure this matches your actual deployed origin
           },
           body: formData,
         });
@@ -226,9 +250,20 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col items-center mt-12 sm:mt-24 mx-auto px-4">
-        <div className="flex flex-col items-center">
+    // Main container for animation, applying container variants
+    <motion.div
+      className="flex justify-center"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.5 }} // Re-trigger when 50% in view
+    >
+      <div className="flex flex-col items-center mt-12 sm:mt-24 mx-auto px-4 overflow-y-hidden">
+        {/* First section */}
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col items-center"
+        >
           <h1 className="text-secondary text-lg md:text-2xl overflow-y-hidden font-medium text-center">
             "Can I even play this Voice Note in front of my mom?"
           </h1>
@@ -236,8 +271,10 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             - Moshe, after hearing 8 harmful words,
             <br />2 mentioning cigarettes, in front of his mom.
           </p>
-        </div>
-        <div className="flex-col justify-center">
+        </motion.div>
+
+        {/* Second section */}
+        <motion.div variants={itemVariants} className="flex-col justify-center">
           <p className="text-secondary text-md md:text-lg font-normal text-center mt-2 md:mt-4">
             Submit your Voice Note below,
             <br />
@@ -247,9 +284,10 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
           <p className="text-secondary text-sm md:text-base font-normal text-left mt-4">
             The voice note should be in Indonesia language (Bahasa).
           </p>
-        </div>
+        </motion.div>
 
-        <div className="mt-12  max-w-md">
+        {/* Upload form section */}
+        <motion.div variants={itemVariants} className="mt-12 max-w-md">
           <form action="">
             <label htmlFor="inputForm" className="">
               <div className="border border-secondary p-3 rounded-xl flex align-middle justify-center cursor-pointer transition-colors">
@@ -269,18 +307,24 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
               disabled={isProcessing}
             />
           </form>
-        </div>
+        </motion.div>
 
-        {/* Error message */}
+        {/* Error message (will animate if present) */}
         {error && (
-          <div className="mt-4 text-red-500 text-base md:text-sm font-light text-center">
+          <motion.div
+            variants={itemVariants}
+            className="mt-4 text-red-500 text-base md:text-sm font-light text-center"
+          >
             Something happens! : {error}
-          </div>
+          </motion.div>
         )}
 
-        {/* Optional: Output */}
+        {/* Optional: Output (will animate if present) */}
         {result && (
-          <div className="mt-4 text-secondary text-base md:text-sm font-light text-center">
+          <motion.div
+            variants={itemVariants}
+            className="mt-4 text-secondary text-base md:text-sm font-light text-center"
+          >
             <p>
               Intinya <span>{result?.prediction}</span>
             </p>
@@ -296,10 +340,10 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
                 {result?.summary}
               </span>
             </p>
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
