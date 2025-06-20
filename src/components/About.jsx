@@ -76,13 +76,16 @@ const About = () => {
                 className="text-sm md:text-base font-light "
                 variants={itemVariants} // Applies fade/slide from itemVariants
               >
-                At the time of developing this portfolio, I'm a 5th-semester
-                Informatics student at President University, soon entering my
-                6th semester. I have a strong foundation in digital design,
-                UI/UX, web development, and software development.Additionally,
-                with a concentration in Artificial Intelligence, I specialize in
-                automation using Machine Learning and Deep Learning,
-                particularly in computer vision and natural language processing.
+                "There's no such thing of can't, it's will you, or will you
+                not?" For years, my father has always taught me the same thing
+                everytime I said "I can't", back then I didn't understand much,
+                but now I'm on my last year of university. <br />
+                I'm an Informatics student at President University. I have a
+                strong foundation in digital design, UI/UX, web development, and
+                software development. Additionally, with a concentration in
+                Artificial Intelligence, I specialize in automation using
+                Machine Learning and Deep Learning, particularly in computer
+                vision and natural language processing.
               </motion.p>
             </div>
             {/* Animate the LinkedIn button */}
