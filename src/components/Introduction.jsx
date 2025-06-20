@@ -60,7 +60,7 @@ function Introduction() {
             text="Hi, my name is Moshe Dayan"
             animateOn="view" // This component might already have its own view animation, consider if you want both.
             revealDirection="center"
-            className="md:text-lg text-sm font-light text-[#404040]"
+            className="md:text-lg text-sm font-light text-[#404040] pointer-events-none"
             speed={20}
             maxIterations={40}
             sequential={true}
@@ -82,9 +82,9 @@ function Introduction() {
               "Backend Development",
               "Artificial Intelligence",
             ]}
-            rotationInterval={1500}
+            rotationInterval={1600}
             splitBy="characters"
-            mainClassName="text-[#1d1d1d] font-bold md:text-sm text-xs bg-[#54fed5] py-1 px-2 rounded-lg mt-2 md:mt-0"
+            mainClassName="text-[#1d1d1d] font-bold md:text-sm text-xs bg-[#54fed5] py-1 px-2 rounded-lg mt-2 md:mt-0 pointer-events-none"
           ></RotatingText>
         </motion.div>
 
