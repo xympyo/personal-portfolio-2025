@@ -47,7 +47,13 @@ const About = () => {
 
         <div className="flex flex-row mt-8 lg:flex-row gap-5 px-4 lg:px-10 w-full overflow-y-hidden">
           {/* Image column, wrapped in motion.div */}
-          <motion.div variants={itemVariants} className="grid grid-cols-12">
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.5 }}
+          >
             <div className="col-span-3 lg:col-span-3"></div>
             <div className="col-span-6 lg:col-span-7">
               <img
@@ -62,7 +68,10 @@ const About = () => {
           {/* Text content column, wrapped in motion.div */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col items-start w-full lg:w-auto"
+            className="flex flex-col items-start w-full lg:w-auto overflow-y-hidden"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.5 }}
           >
             <div className="flex flex-col gap-2 overflow-y-hidden">
               <motion.h1
