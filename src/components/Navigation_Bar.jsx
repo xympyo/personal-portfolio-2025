@@ -31,7 +31,8 @@ const Navigation_Bar = () => {
       className="flex flex-row justify-between mx-5 mt-5"
       variants={containerVariants}
       initial="hidden" // Starts hidden
-      animate="visible" // Animates to visible immediately on mount
+      whileInView="visible" // Animates to visible immediately on mount
+      viewport={{ once: false, amount: 0.2 }}
       // No 'viewport' needed as it's always visible on load
     >
       {/* Moshe Dayan name/logo */}

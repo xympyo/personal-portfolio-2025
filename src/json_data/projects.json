@@ -28,5 +28,8 @@
     "title": "Budi NLUG",
     "image": "budi_nlug.png",
     "description": "Budi is a software that is built with Flutter Dart, the special part about Budi is that it's an AI Chatbot Application that is built using DialoGPT, with Scientific Question Answering Dataset on Kaggle.\nThe project is done on our AI Class, in NLUG Subject (Natural Language Understanding and Generating)"
+  },
+  {
+    "title": "TappyTale"
   }
 ]

@@ -61,18 +61,14 @@ const Hero_Section = () => {
     <ErrorBoundary>
       <div className="relative overflow-y-hidden">
         {/* Wrap Hero_3D_Section with motion.div for animation */}
-        <motion.div
-          variants={sectionVariants} // Apply the animation variants
-          initial="hidden" // Start hidden
-          whileInView="visible" // Animate to visible when in view
-          viewport={{ once: false, amount: 0.5 }} // Re-trigger when 50% in view
+        <div
           className="absolute inset-0 w-full h-full z-[-1] overflow-y-hidden" // Keep existing positioning
         >
           <Hero_3D_Section
             isProcessing={isProcessing}
             isComplete={isComplete}
           />
-        </motion.div>
+        </div>
 
         <Hero_Text
           isProcessing={isProcessing}

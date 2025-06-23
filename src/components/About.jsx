@@ -35,7 +35,7 @@ const About = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, amount: 0.4 }} // Trigger when 40% in view, re-trigger every time
+        viewport={{ once: true, amount: 0.4 }} // Trigger when 40% in view, re-trigger every time
       >
         {/* Animate the main "about me" heading */}
         <motion.h1
@@ -73,19 +73,30 @@ const About = () => {
               </motion.h1>
               {/* Animate the main descriptive paragraph */}
               <motion.p
-                className="text-sm md:text-base font-light "
+                className="text-sm md:text-base font-light"
                 variants={itemVariants} // Applies fade/slide from itemVariants
               >
-                "There's no such thing of can't, it's will you, or will you
-                not?" For years, my father has always taught me the same thing
-                everytime I said "I can't", back then I didn't understand much,
-                but now I'm on my last year of university. <br />
-                I'm an Informatics student at President University. I have a
-                strong foundation in digital design, UI/UX, web development, and
-                software development. Additionally, with a concentration in
-                Artificial Intelligence, I specialize in automation using
-                Machine Learning and Deep Learning, particularly in computer
-                vision and natural language processing.
+                I once believed I was a sharp, fast learner. University
+                shattered that illusion.
+                <br />
+                <span className="bg-[#54fed5] rounded-md px-1 py-0.5 font-medium">
+                  I was no genius.
+                </span>{" "}
+                and
+                <br />
+                <span className="bg-[#54fed5] rounded-md px-1 py-0.5 font-medium">
+                  "There's no 'can't,' only 'will you, or will you not?'".
+                </span>
+                <br />I am now in my final year of Informatics at President
+                University, fueled by an unwavering will to understand and
+                build.
+                <br />
+                My journey has forged a strong foundation in digital design,
+                UI/UX, web development, and software development. With a
+                concentration in Artificial Intelligence, I specialize in
+                automation using Machine Learning and Deep Learning,
+                particularly in computer vision and natural language processing.
+                My work is a testament to what unwavering will can achieve.
               </motion.p>
             </div>
             {/* Animate the LinkedIn button */}
