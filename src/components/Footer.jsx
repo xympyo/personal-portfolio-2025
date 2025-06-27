@@ -31,7 +31,7 @@ const Footer = () => {
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.1 }} // Trigger when 50% in view, re-trigger every time
+      viewport={{ once: true, amount: 0.30 }} // Trigger when 50% in view, re-trigger every time
     >
       <motion.hr variants={itemVariants} /> {/* Animate the HR line */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-y-hidden">
