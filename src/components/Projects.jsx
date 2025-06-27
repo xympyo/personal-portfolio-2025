@@ -33,7 +33,7 @@ const Projects = () => {
             variants={itemVariants} // Apply the container variants
             initial="hidden" // Start with the 'hidden' state
             whileInView="visible" // Animate to 'visible' when in view
-            viewport={{ once: false, amount: 0.475 }} // Trigger when 50% in view, re-trigger every time
+            viewport={{ once: false, amount: 0.15 }} // Trigger when 50% in view, re-trigger every time
           >
             <div>
               <div className="col-span-1"></div>

@@ -35,7 +35,7 @@ const About = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.4 }} // Trigger when 40% in view, re-trigger every time
+        viewport={{ once: true, amount: 0.15 }} // Trigger when 40% in view, re-trigger every time
       >
         {/* Animate the main "about me" heading */}
         <motion.h1
@@ -45,14 +45,14 @@ const About = () => {
           about me
         </motion.h1>
 
-        <div className="flex flex-row mt-8 lg:flex-row gap-5 px-4 lg:px-10 w-full overflow-y-hidden">
+        <div className="flex flex-col mt-8 lg:flex-row gap-5 px-4 lg:px-10 w-full overflow-y-hidden">
           {/* Image column, wrapped in motion.div */}
           <motion.div
             variants={itemVariants}
             className="grid grid-cols-12"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: false, amount: 0.15 }}
           >
             <div className="col-span-3 lg:col-span-3"></div>
             <div className="col-span-6 lg:col-span-7">
@@ -71,20 +71,17 @@ const About = () => {
             className="flex flex-col items-start w-full lg:w-auto overflow-y-hidden"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: false, amount: 0.15 }}
           >
             <div className="flex flex-col gap-2 overflow-y-hidden">
-              <motion.h1
+              <h1
                 className="text-xl md:text-xl text-secondary overflow-y-hidden"
                 variants={itemVariants} // Applies fade/slide from itemVariants
               >
                 hey, Moshe here!
-              </motion.h1>
+              </h1>
               {/* Animate the main descriptive paragraph */}
-              <motion.p
-                className="text-sm md:text-base font-light"
-                variants={itemVariants} // Applies fade/slide from itemVariants
-              >
+              <p className="text-sm md:text-base font-light">
                 I once believed I was a sharp, fast learner. University
                 shattered that illusion.
                 <br />
@@ -106,19 +103,17 @@ const About = () => {
                 automation using Machine Learning and Deep Learning,
                 particularly in computer vision and natural language processing.
                 My work is a testament to what unwavering will can achieve.
-              </motion.p>
+              </p>
             </div>
-            {/* Animate the LinkedIn button */}
-            <motion.a
+            <a
               href="https://linkedin.com/in/moshedayan/"
               target="_blank"
               className="bg-secondary rounded-lg p-2 mt-4 lg:w-auto text-center"
-              variants={itemVariants} // Applies fade/slide from itemVariants
             >
               <p className="text-primary text-sm md:text-base">
                 Know me more via LinkedIn
               </p>
-            </motion.a>
+            </a>
           </motion.div>
         </div>
       </motion.div>
