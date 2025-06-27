@@ -219,7 +219,7 @@ const RotatingText = forwardRef((props, ref) => {
                   </motion.span>
                 ))}
                 {wordObj.needsSpace && (
-                  <span className="whitespace-pre"> </span>
+                  <span className="whitespace-pre overflow-y-hidden"> </span>
                 )}
               </span>
             );

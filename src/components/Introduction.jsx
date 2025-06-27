@@ -72,7 +72,7 @@ function Introduction() {
           variants={itemVariants}
           className="flex flex-col md:flex-row mt-2 md:mt-0 w-full align-middle"
         >
-          <p className="inline-block text-[#404040] md:text-sm text-xs self-center">
+          <p className="inline-block text-[#404040] md:text-sm text-xs self-center overflow-y-hidden">
             I have a strong foundation of&nbsp;
           </p>
           <RotatingText
@@ -84,7 +84,7 @@ function Introduction() {
             ]}
             rotationInterval={1600}
             splitBy="characters"
-            mainClassName="text-[#1d1d1d] font-bold md:text-sm text-xs bg-[#54fed5] py-1 px-2 rounded-lg mt-2 md:mt-0 pointer-events-none"
+            mainClassName="text-[#1d1d1d] font-bold md:text-sm text-xs bg-[#54fed5] py-1 px-2 rounded-lg mt-2 md:mt-0 pointer-events-none overflow-y-hidden"
           ></RotatingText>
         </motion.div>
 
