@@ -10,9 +10,12 @@ import { motion } from "framer-motion"; // <-- Import motion here
 
 const Projects = () => {
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 }, // Start invisible and slightly below
-    visible: { opacity: 1, y: 0 }, // Animate to visible and original position
-  };
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+};
+
+// Limit the number of animated items to 6 (for performance)
+const MAX_ANIMATED_ITEMS = 6;
   return (
     <div className="flex justify-center mt-20 sm:mt-40 px-4 lg:px-0">
       <div className="hidden lg:block w-1/6"></div>
@@ -23,7 +26,7 @@ const Projects = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.6, delay: 0 }} // Starts almost immediately
+          transition={{ type: "tween", ease: "easeOut", duration: 0.5 }}
         >
           my projects
         </motion.h1>

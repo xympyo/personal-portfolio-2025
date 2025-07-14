@@ -9,8 +9,11 @@ const About = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2, // Delay between each child's animation
-        delayChildren: 0.3, // Initial delay for the first child
+        duration: 0.5,
+        type: "tween",
+        ease: "easeOut",
+        staggerChildren: 0,
+        delayChildren: 0,
       },
     },
   };
@@ -35,7 +38,8 @@ const About = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.15 }} // Trigger when 40% in view, re-trigger every time
+        viewport={{ once: false, amount: 0.15 }}
+        transition={{ type: "tween", ease: "easeOut", duration: 0.5 }}
       >
         {/* Animate the main "about me" heading */}
         <motion.h1

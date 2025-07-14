@@ -8,8 +8,11 @@ const Footer = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1, // Delay between each child's animation
-        delayChildren: 0.2, // Initial delay for the first child
+        duration: 0.5,
+        type: "tween",
+        ease: "easeOut",
+        staggerChildren: 0,
+        delayChildren: 0,
       },
     },
   };
@@ -31,7 +34,8 @@ const Footer = () => {
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.30 }} // Trigger when 50% in view, re-trigger every time
+      viewport={{ once: true, amount: 0.30 }}
+      transition={{ type: "tween", ease: "easeOut", duration: 0.5 }}
     >
       <motion.hr variants={itemVariants} /> {/* Animate the HR line */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-y-hidden">
