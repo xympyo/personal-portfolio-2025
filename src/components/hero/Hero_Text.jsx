@@ -3,9 +3,9 @@ import upload_icon from "../../assets/upload_icon.png";
 import { motion } from "framer-motion"; // <-- Import motion here!
 
 // API configuration
-const API_URL =
-  "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/analyze";
-const API_KEY = "A}{ctxYq{1+NYa-YaU@I";
+const API_URL = "http://127.0.0.1:5000/api/analyze";
+// "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/analyze";
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
   const [result, setResult] = useState(null);
@@ -42,7 +42,8 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
         // Try with no-cors mode first
         try {
           const response = await fetch(
-            "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/",
+            "http://127.0.0.1:5000",
+            // "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/",
             {
               method: "GET",
               mode: "no-cors", // This will allow the request to go through, but we won't get the response
@@ -59,7 +60,8 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
             try {
               console.log("Testing /api/test endpoint...");
               const testResponse = await fetch(
-                "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/test",
+                "http://127.0.0.1:5000",
+                // "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/api/test",
                 {
                   method: "GET",
                   headers: {
@@ -87,8 +89,8 @@ const Hero_Text = ({ isProcessing, setIsProcessing, setIsComplete }) => {
           console.log("Trying with CORS proxy...");
           const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Note: This proxy is public and may have rate limits
           const targetUrl =
-            "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/";
-
+            // "https://portfolio-vn-detection-mfpsy.ondigitalocean.app/";
+            "http://127.0.0.1:5000";
           try {
             const proxyResponse = await fetch(proxyUrl + targetUrl, {
               method: "GET",
