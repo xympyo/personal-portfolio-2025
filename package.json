@@ -14,7 +14,7 @@
     "framer-motion": "^12.17.0",
     "gsap": "^3.13.0",
     "motion": "^12.18.1",
-    "next": "^15.3.4",
+    "next": "15.3.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
