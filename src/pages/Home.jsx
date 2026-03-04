@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { pageTransition, staggerContainer, fadeUp } from '../lib/motion';
 import WorkCard from '../components/WorkCard';
 import SectionReveal from '../components/SectionReveal';
+import PackingAnimation from '../components/PackingAnimation';
 
 const works = [
   {
@@ -29,12 +30,13 @@ export default function Home() {
   return (
     <motion.div {...pageTransition}>
       {/* HERO */}
-      <section className="py-24 md:py-40 px-6">
+      <section className="relative py-24 md:py-40 px-6 overflow-hidden">
+        <PackingAnimation />
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
-          className="max-w-content mx-auto"
+          className="max-w-content mx-auto relative z-10"
         >
           <motion.p variants={fadeUp} custom={0} className="font-serif text-4xl md:text-6xl lg:text-7xl text-text leading-[1.15] max-w-[800px]">
             There&rsquo;s no can or can&rsquo;t.

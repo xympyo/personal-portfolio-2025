@@ -1,20 +1,18 @@
-import { useState, useRef, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
-  convexHull,
   getBounds,
   normalizePoly,
   boundingBoxPack,
-  polygonPack,
+  beamSearchPack,
   calcDensity,
-  polyArea,
+  convexHull,
   PRESETS,
 } from '../lib/geometry';
 
 const ACCENT = '#C8470D';
 const MUTED_FILL = '#E8E4DF';
 const DARK = '#1A1A1A';
-const BG = '#F7F5F2';
 
 function polyToSvgPath(poly) {
   if (!poly || poly.length === 0) return '';
@@ -35,12 +33,14 @@ function ShapePreview({ poly, size = 80 }) {
   );
 }
 
-function CanvasView({ placements, poly, canvasW, canvasH, animating, color }) {
+function CanvasView({ placements, poly, canvasW, canvasH, color, visibleCount, orientations }) {
   const scaleX = 500 / canvasW;
   const scaleY = 400 / canvasH;
   const scale = Math.min(scaleX, scaleY);
   const viewW = canvasW * scale;
   const viewH = canvasH * scale;
+
+  const visible = placements.slice(0, visibleCount);
 
   return (
     <svg
@@ -50,24 +50,49 @@ function CanvasView({ placements, poly, canvasW, canvasH, animating, color }) {
       style={{ maxHeight: 400 }}
     >
       <rect x={0} y={0} width={viewW} height={viewH} fill={MUTED_FILL} opacity={0.3} />
-      <AnimatePresence>
-        {placements.map((p, i) => {
-          const translated = poly.map(([px, py]) => [(px + p.x) * scale, (py + p.y) * scale]);
-          return (
-            <motion.path
-              key={`${i}-${p.x}-${p.y}`}
-              d={polyToSvgPath(translated)}
-              fill={color}
-              fillOpacity={0.6}
-              stroke={color}
-              strokeWidth={0.5}
-              initial={animating ? { opacity: 0, scale: 0.8 } : false}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: animating ? i * 0.02 : 0 }}
-            />
-          );
-        })}
-      </AnimatePresence>
+      {visible.map((p, i) => {
+        const shapePoly = orientations && p.orientationIndex !== undefined 
+          ? orientations[p.orientationIndex].poly 
+          : poly;
+        const translated = shapePoly.map(([px, py]) => [(px + p.x) * scale, (py + p.y) * scale]);
+        return (
+          <path
+            key={`${i}-${p.x}-${p.y}`}
+            d={polyToSvgPath(translated)}
+            fill={color}
+            fillOpacity={0.6}
+            stroke={color}
+            strokeWidth={0.5}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+function MiniCanvasPreview({ placements, poly, canvasW, canvasH, size = 60, orientations }) {
+  const scale = size / Math.max(canvasW, canvasH);
+  const viewW = canvasW * scale;
+  const viewH = canvasH * scale;
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${viewW} ${viewH}`} className="rounded border border-border">
+      <rect x={0} y={0} width={viewW} height={viewH} fill="#fff" />
+      {placements.slice(0, 50).map((p, i) => {
+        const shapePoly = orientations && p.orientationIndex !== undefined 
+          ? orientations[p.orientationIndex].poly 
+          : poly;
+        const translated = shapePoly.map(([px, py]) => [(px + p.x) * scale, (py + p.y) * scale]);
+        return (
+          <path
+            key={i}
+            d={polyToSvgPath(translated)}
+            fill={ACCENT}
+            fillOpacity={0.4}
+            stroke="none"
+          />
+        );
+      })}
     </svg>
   );
 }
@@ -76,12 +101,14 @@ export default function AutovasDemo() {
   const [selectedPreset, setSelectedPreset] = useState('L-Shape');
   const [customPoints, setCustomPoints] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [canvasW, setCanvasW] = useState(300);
-  const [canvasH, setCanvasH] = useState(300);
-  const [marginVal, setMarginVal] = useState(5);
-  const [gapVal, setGapVal] = useState(3);
+  const [canvasW, setCanvasW] = useState(580);
+  const [canvasH, setCanvasH] = useState(400);
+  const [marginVal, setMarginVal] = useState(10);
+  const [gapVal, setGapVal] = useState(5);
   const [result, setResult] = useState(null);
-  const [animating, setAnimating] = useState(false);
+  const [searchPhase, setSearchPhase] = useState('idle');
+  const [bbVisibleCount, setBbVisibleCount] = useState(0);
+  const [polyVisibleCount, setPolyVisibleCount] = useState(0);
   const drawRef = useRef(null);
 
   const activePoly = useMemo(() => {
@@ -102,37 +129,84 @@ export default function AutovasDemo() {
     setCustomPoints([]);
     setIsDrawing(true);
     setResult(null);
+    setSearchPhase('idle');
   };
 
   const finishDrawing = () => {
     setIsDrawing(false);
   };
 
+  // Batch reveal for bounding box
+  useEffect(() => {
+    if (!result || searchPhase !== 'complete') return;
+
+    const batchSize = 8;
+    const intervalMs = 30;
+
+    const bbInterval = setInterval(() => {
+      setBbVisibleCount((prev) => {
+        const next = Math.min(prev + batchSize, result.bbPlacements.length);
+        if (next >= result.bbPlacements.length) clearInterval(bbInterval);
+        return next;
+      });
+    }, intervalMs);
+
+    return () => clearInterval(bbInterval);
+  }, [result, searchPhase]);
+
+  // Batch reveal for beam search winner
+  useEffect(() => {
+    if (!result || searchPhase !== 'winner') return;
+
+    const batchSize = 8;
+    const intervalMs = 30;
+
+    const polyInterval = setInterval(() => {
+      setPolyVisibleCount((prev) => {
+        const next = Math.min(prev + batchSize, result.beamPlacements.length);
+        if (next >= result.beamPlacements.length) {
+          clearInterval(polyInterval);
+          setTimeout(() => setSearchPhase('complete'), 500);
+        }
+        return next;
+      });
+    }, intervalMs);
+
+    return () => clearInterval(polyInterval);
+  }, [result, searchPhase]);
+
   const runPacking = useCallback(() => {
     if (activePoly.length < 3) return;
 
-    const hull = convexHull(activePoly);
-    const bounds = getBounds(activePoly);
-    const area = polyArea(activePoly);
+    setBbVisibleCount(0);
+    setPolyVisibleCount(0);
+    setResult(null);
+    setSearchPhase('searching');
 
-    const bbPlacements = boundingBoxPack(bounds, canvasW, canvasH, marginVal, gapVal);
-    const polyPlacements = polygonPack(hull, bounds, canvasW, canvasH, marginVal, gapVal);
+    setTimeout(() => {
+      const bounds = getBounds(activePoly);
+      const bbPlacements = boundingBoxPack(bounds, canvasW, canvasH, marginVal, gapVal);
+      const beamResult = beamSearchPack(activePoly, canvasW, canvasH, marginVal, gapVal, 5);
 
-    const bbDensity = calcDensity(bbPlacements, bounds.width * bounds.height, canvasW, canvasH);
-    const polyDensity = calcDensity(polyPlacements, bounds.width * bounds.height, canvasW, canvasH);
+      const bbDensity = calcDensity(bbPlacements, bounds.width * bounds.height, canvasW, canvasH);
+      const beamDensity = calcDensity(beamResult.placements, bounds.width * bounds.height, canvasW, canvasH);
 
-    setAnimating(true);
-    setResult({
-      bbPlacements,
-      polyPlacements,
-      bbDensity,
-      polyDensity,
-      bbCount: bbPlacements.length,
-      polyCount: polyPlacements.length,
-      improvement: polyDensity - bbDensity,
-    });
+      setResult({
+        bbPlacements,
+        beamPlacements: beamResult.placements,
+        bbDensity,
+        beamDensity,
+        bbCount: bbPlacements.length,
+        beamCount: beamResult.count,
+        improvement: beamDensity - bbDensity,
+        candidates: beamResult.candidates,
+        rowsEvaluated: beamResult.rowsEvaluated,
+        orientations: beamResult.orientations,
+        rowOrientations: beamResult.rowOrientations,
+      });
 
-    setTimeout(() => setAnimating(false), 2000);
+      setTimeout(() => setSearchPhase('winner'), 1500);
+    }, 100);
   }, [activePoly, canvasW, canvasH, marginVal, gapVal]);
 
   return (
@@ -140,16 +214,11 @@ export default function AutovasDemo() {
       <div>
         <h3 className="font-serif text-2xl md:text-3xl text-text mb-2">Try it yourself.</h3>
         <p className="text-muted text-body">
-          This is a simplified browser version of the polygon-aware
-          packing algorithm at the core of Autovas.
+          This is a simplified browser version of the Beam Search packing algorithm at the core of Autovas.
         </p>
         <p className="text-muted text-body mt-2">
-          Pick a shape. Set your canvas. Watch the difference
-          between bounding-box packing and actual polygon packing.
-        </p>
-        <p className="text-muted text-body mt-2">
-          The gap between the two numbers — that&rsquo;s the problem
-          this algorithm solves.
+          Pick a shape. Set your canvas. Watch the algorithm search through orientation combinations
+          to find the optimal packing.
         </p>
       </div>
 
@@ -165,6 +234,7 @@ export default function AutovasDemo() {
                 setCustomPoints([]);
                 setIsDrawing(false);
                 setResult(null);
+                setSearchPhase('idle');
               }}
               className={`flex flex-col items-center gap-2 p-3 rounded-lg border transition-colors ${
                 !isDrawing && customPoints.length < 3 && selectedPreset === name
@@ -301,56 +371,123 @@ export default function AutovasDemo() {
           transition={{ duration: 0.5 }}
           className="space-y-8"
         >
-          {/* Stats Bar */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-dark text-bg rounded-lg p-4 text-center">
-              <p className="text-xs font-mono opacity-60 mb-1">Bounding Box</p>
-              <p className="text-2xl font-mono">{result.bbCount}</p>
-              <p className="text-xs font-mono opacity-60">parts · {result.bbDensity.toFixed(1)}%</p>
-            </div>
-            <div className="bg-accent text-bg rounded-lg p-4 text-center">
-              <p className="text-xs font-mono opacity-80 mb-1">Polygon-Aware</p>
-              <p className="text-2xl font-mono">{result.polyCount}</p>
-              <p className="text-xs font-mono opacity-80">parts · {result.polyDensity.toFixed(1)}%</p>
-            </div>
-            <div className="border border-border rounded-lg p-4 text-center">
-              <p className="text-xs font-mono text-muted mb-1">Improvement</p>
-              <p className={`text-2xl font-mono ${result.improvement > 0 ? 'text-accent' : 'text-text'}`}>
-                {result.improvement > 0 ? '+' : ''}{result.improvement.toFixed(1)}%
+          {/* Beam Search Visualization */}
+          {searchPhase === 'searching' && (
+            <div className="bg-surface border border-accent rounded-lg p-6">
+              <p className="text-xs font-mono uppercase tracking-[0.2em] text-accent mb-4">
+                Beam Search Running...
               </p>
-              <p className="text-xs font-mono text-muted">vs bounding box</p>
+              <div className="grid grid-cols-2 gap-4 mb-4 text-xs font-mono text-muted">
+                <div>Beam width: <span className="text-text">5</span></div>
+                <div>Orientations: <span className="text-text">{result.orientations.length}</span></div>
+                <div>Rows evaluated: <span className="text-text">{result.rowsEvaluated}</span></div>
+              </div>
+              <div className="space-y-3">
+                {result.candidates.map((candidate, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-4 p-3 rounded border border-border bg-white"
+                  >
+                    <MiniCanvasPreview
+                      placements={candidate.placements}
+                      poly={activePoly}
+                      canvasW={canvasW}
+                      canvasH={canvasH}
+                      size={50}
+                      orientations={result.orientations}
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 bg-accent/20 rounded-full h-2 overflow-hidden">
+                          <div
+                            className="bg-accent h-full transition-all"
+                            style={{ width: `${(candidate.score / result.beamCount) * 100}%` }}
+                          />
+                        </div>
+                        <span className="text-sm font-mono text-text whitespace-nowrap">
+                          {candidate.score} parts
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Winner Announcement */}
+          {(searchPhase === 'winner' || searchPhase === 'complete') && (
+            <div className="bg-accent/10 border border-accent rounded-lg p-6">
+              <p className="text-xs font-mono uppercase tracking-[0.2em] text-accent mb-2">
+                Winner Found
+              </p>
+              <p className="text-lg font-mono text-text mb-2">{result.beamCount} parts placed</p>
+              <p className="text-xs font-mono text-muted">
+                Row strategy: {result.rowOrientations.map(row => {
+                  const angle = result.orientations[row.orientIdx].angle;
+                  const offset = row.xOffset > 0 ? `+${(row.xOffset).toFixed(0)}` : '';
+                  return `${angle}°${offset}`;
+                }).join(' → ')}
+              </p>
+            </div>
+          )}
+
+          {/* Stats Bar */}
+          {searchPhase === 'complete' && (
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-dark text-bg rounded-lg p-4 text-center">
+                <p className="text-xs font-mono opacity-60 mb-1">Bounding Box</p>
+                <p className="text-2xl font-mono">{result.bbCount}</p>
+                <p className="text-xs font-mono opacity-60">parts · {result.bbDensity.toFixed(1)}%</p>
+              </div>
+              <div className="bg-accent text-bg rounded-lg p-4 text-center">
+                <p className="text-xs font-mono opacity-80 mb-1">Beam Search</p>
+                <p className="text-2xl font-mono">{result.beamCount}</p>
+                <p className="text-xs font-mono opacity-80">parts · {result.beamDensity.toFixed(1)}%</p>
+              </div>
+              <div className="border border-border rounded-lg p-4 text-center">
+                <p className="text-xs font-mono text-muted mb-1">Improvement</p>
+                <p className={`text-2xl font-mono ${result.improvement > 0 ? 'text-accent' : 'text-text'}`}>
+                  {result.improvement > 0 ? '+' : ''}{result.improvement.toFixed(1)}%
+                </p>
+                <p className="text-xs font-mono text-muted">vs bounding box</p>
+              </div>
+            </div>
+          )}
 
           {/* Side by side canvases */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-3">
-                Bounding Box Packing
-              </p>
-              <CanvasView
-                placements={result.bbPlacements}
-                poly={activePoly}
-                canvasW={canvasW}
-                canvasH={canvasH}
-                animating={animating}
-                color={DARK}
-              />
+          {searchPhase === 'complete' && (
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-3">
+                  Bounding Box Packing
+                </p>
+                <CanvasView
+                  placements={result.bbPlacements}
+                  poly={activePoly}
+                  canvasW={canvasW}
+                  canvasH={canvasH}
+                  color={DARK}
+                  visibleCount={bbVisibleCount}
+                  orientations={null}
+                />
+              </div>
+              <div>
+                <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-3">
+                  Beam Search Packing (Autovas)
+                </p>
+                <CanvasView
+                  placements={result.beamPlacements}
+                  poly={activePoly}
+                  canvasW={canvasW}
+                  canvasH={canvasH}
+                  color={ACCENT}
+                  visibleCount={polyVisibleCount}
+                  orientations={result.orientations}
+                />
+              </div>
             </div>
-            <div>
-              <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-3">
-                Polygon-Aware Packing (Autovas)
-              </p>
-              <CanvasView
-                placements={result.polyPlacements}
-                poly={activePoly}
-                canvasW={canvasW}
-                canvasH={canvasH}
-                animating={animating}
-                color={ACCENT}
-              />
-            </div>
-          </div>
+          )}
         </motion.div>
       )}
     </div>
