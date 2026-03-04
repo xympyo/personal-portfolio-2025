@@ -2,12 +2,34 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { pageTransition } from '../lib/motion';
 import SectionReveal from '../components/SectionReveal';
+import WorkCard from '../components/WorkCard';
 
 const filters = ['All', 'AI/ML', 'Mobile', 'Web', 'Competition'];
 
+const featuredWorks = [
+  {
+    title: 'Autovas',
+    description: 'An NP-hard problem walked into a factory. I wrote the algorithm that solved it.',
+    tags: ['Algorithm Design', 'C#', 'SAT Collision', '2D Bin Packing', 'Live Demo ↗'],
+    to: '/work/autovas',
+  },
+  {
+    title: 'Project EDEN',
+    description: 'A half-shift wasted on one Excel query. I replaced it with a 10-second API.',
+    tags: ['ASP.NET Core', 'SQL Server', 'Python', 'Digital Transformation', 'PT Mattel Indonesia'],
+    to: '/work/eden',
+  },
+  {
+    title: 'Homize',
+    description: 'The client said 12 million. I said 30 million — and proved why before writing a line of code.',
+    tags: ['Laravel', 'WebSockets', 'Full-Stack', 'Technical Product Management'],
+    to: '/work/homize',
+  },
+];
+
 const projects = [
   {
-    title: 'VisionQ — Deep Learning Package Verification',
+    title: 'Deep Learning Package Verification',
     context: 'PT Mattel Indonesia, 2025',
     description: '4-stage pipeline: YOLO → Hi-SAM → Parseq → Llama 4 Maverick/Scout',
     tags: ['Deep Learning', 'Computer Vision', 'NLP', 'Python'],
@@ -68,11 +90,30 @@ export default function Projects() {
     <motion.div {...pageTransition}>
       <section className="section-padding px-6">
         <div className="max-w-content mx-auto">
+          {/* FEATURED WORK */}
           <SectionReveal>
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-text leading-[1.1]">
+            <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-12">
+              Featured Work
+            </p>
+          </SectionReveal>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-24">
+            {featuredWorks.map((work, i) => (
+              <SectionReveal key={work.to} delay={i * 0.5}>
+                <WorkCard {...work} />
+              </SectionReveal>
+            ))}
+          </div>
+
+          {/* DIVIDER */}
+          <div className="border-t border-border mb-16"></div>
+
+          {/* EVERYTHING ELSE */}
+          <SectionReveal>
+            <h2 className="font-serif text-3xl md:text-4xl text-text mb-4">
               Everything Else
-            </h1>
-            <p className="text-muted mt-6 max-w-prose">
+            </h2>
+            <p className="text-muted mb-12 max-w-prose">
               The experiments, course projects, competition entries,
               and things I built to learn something.
               Not case studies — cards. Scroll, filter, explore.
@@ -80,7 +121,7 @@ export default function Projects() {
           </SectionReveal>
 
           <SectionReveal delay={1}>
-            <div className="flex flex-wrap gap-3 mt-12 mb-12">
+            <div className="flex flex-wrap gap-3 mb-12">
               {filters.map((f) => (
                 <button
                   key={f}

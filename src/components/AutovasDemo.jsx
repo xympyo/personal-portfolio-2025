@@ -119,7 +119,7 @@ export default function AutovasDemo() {
     const polyPlacements = polygonPack(hull, bounds, canvasW, canvasH, marginVal, gapVal);
 
     const bbDensity = calcDensity(bbPlacements, bounds.width * bounds.height, canvasW, canvasH);
-    const polyDensity = calcDensity(polyPlacements, area, canvasW, canvasH);
+    const polyDensity = calcDensity(polyPlacements, bounds.width * bounds.height, canvasW, canvasH);
 
     setAnimating(true);
     setResult({

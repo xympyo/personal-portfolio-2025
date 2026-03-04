@@ -11,7 +11,7 @@ export default function About() {
             <img 
               src="/MosheDayan.JPG" 
               alt="Moshe Dayan" 
-              className="rounded-2xl w-full max-w-sm mb-10"
+              className="rounded-2xl w-full max-w-sm h-80 object-cover mb-10"
             />
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-text leading-[1.1] mb-12">
               About Moshe Dayan
