@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <motion.div {...pageTransition}>
       {/* HERO */}
-      <section className="pb-6 pt-1">
+      <section className="pb-6 pt-2">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
