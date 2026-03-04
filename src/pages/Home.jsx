@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <motion.div {...pageTransition}>
       {/* HERO */}
-      <section className="pb-6 pt-2">
+      <section className="py-24 md:py-40 px-6">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -37,21 +37,19 @@ export default function Home() {
           className="max-w-content mx-auto"
         >
           <motion.p variants={fadeUp} custom={0} className="font-serif text-4xl md:text-6xl lg:text-7xl text-text leading-[1.15] max-w-[800px]">
-            Most people ask &ldquo;can I?&rdquo;
+            There&rsquo;s no can or can&rsquo;t.
           </motion.p>
-          <motion.p variants={fadeUp} custom={1} className="font-serif text-4xl md:text-6xl lg:text-7xl text-text leading-[1.15] max-w-[800px] mt-2">
-            I stopped asking that a long time ago.
-          </motion.p>
-          <motion.p variants={fadeUp} custom={2} className="font-serif text-4xl md:text-6xl lg:text-7xl text-accent leading-[1.15] max-w-[800px] mt-8">
-            The only question is: will you?
+          <motion.p variants={fadeUp} custom={1} className="font-serif text-4xl md:text-6xl lg:text-7xl text-accent leading-[1.15] max-w-[800px] mt-4">
+            Will you?
           </motion.p>
 
-          <motion.div variants={fadeUp} custom={3} className="mt-12">
-            <p className="text-sm text-muted tracking-wide uppercase">Moshe Dayan</p>
-            <p className="text-muted mt-1">I build systems that replace broken ones.</p>
+          <motion.div variants={fadeUp} custom={2} className="mt-12 space-y-1">
+            <p className="text-sm text-muted">Moshe Dayan</p>
+            <p className="text-sm text-muted">Final-year CS student. Informatics, President University.</p>
+            <p className="text-sm text-muted">Currently: Process Engineering Intern at PT Mattel Indonesia.</p>
           </motion.div>
 
-          <motion.div variants={fadeUp} custom={4} className="mt-8 flex flex-wrap gap-4">
+          <motion.div variants={fadeUp} custom={3} className="mt-8 flex flex-wrap gap-4">
             <Link
               to="/#work"
               onClick={(e) => {
@@ -71,10 +69,6 @@ export default function Home() {
               Get my CV
             </a>
           </motion.div>
-
-          <motion.p variants={fadeUp} custom={5} className="mt-10 text-sm text-muted">
-            Process Engineering Intern @ PT Mattel Indonesia · President University, 3.89 GPA · Jababeka Scholar
-          </motion.p>
         </motion.div>
       </section>
 

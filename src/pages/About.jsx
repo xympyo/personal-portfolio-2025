@@ -8,6 +8,11 @@ export default function About() {
       <section className="section-padding px-6">
         <div className="max-w-prose mx-auto">
           <SectionReveal>
+            <img 
+              src="/MosheDayan.JPG" 
+              alt="Moshe Dayan" 
+              className="rounded-2xl w-full max-w-sm mb-10"
+            />
             <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-text leading-[1.1] mb-12">
               About Moshe Dayan
             </h1>
