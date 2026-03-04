@@ -15,7 +15,7 @@ export default function PackingAnimation() {
   const [placements, setPlacements] = useState([]);
   const [poly, setPoly] = useState(null);
   const [orientations, setOrientations] = useState([]);
-  const [canvasSize] = useState({ w: 400, h: 600 });
+  const [canvasSize] = useState({ w: 300, h: 400 });
   const [visibleCount, setVisibleCount] = useState(0);
   const [phase, setPhase] = useState('idle');
   const cycleRef = useRef(null);
@@ -116,8 +116,8 @@ export default function PackingAnimation() {
               d={polyToSvgPath(translated)}
               fill={color}
               stroke={color}
-              strokeWidth={0.3}
-              opacity={0.8}
+              strokeWidth={0.1}
+              opacity={0.5}
             />
           );
         })}
