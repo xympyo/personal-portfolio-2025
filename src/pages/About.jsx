@@ -13,37 +13,43 @@ export default function About() {
               alt="Moshe Dayan" 
               className="rounded-2xl w-full max-w-sm h-80 object-cover mb-10"
             />
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-text leading-[1.1] mb-12">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-text leading-[1.1] mb-4">
               About Moshe Dayan
             </h1>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted font-mono mt-2 mb-8">
+              <span>PT Mattel Indonesia</span>
+              <span className="text-border">&middot;</span>
+              <span>IOFEST 2025 &middot; Top 4 Nationally</span>
+              <span className="text-border">&middot;</span>
+              <span>FINPROTION 2025 &middot; Best Project</span>
+            </div>
           </SectionReveal>
 
           <SectionReveal delay={1}>
             <div className="space-y-6 text-muted text-body leading-relaxed">
               <p>
                 I&rsquo;m a final-year Informatics student at President University,
-                Cikarang, Indonesia. GPA 3.89. Jababeka Scholar.
-                Currently interning as a Process Engineer at PT Mattel Indonesia,
-                where my actual job title and my actual job description
-                have very little to do with each other.
+                Cikarang, Indonesia.
               </p>
               <p>
-                I build things. Specifically, I build things that replace
-                other things that were broken.
-              </p>
-              <p>
-                I&rsquo;m not a genius. I was not a gifted kid.
+                I&rsquo;m not a genius. Never was.
                 I&rsquo;ve lost more competitions than I&rsquo;ve won,
-                failed more approaches than I&rsquo;ve shipped,
-                and spent more time confused than certain.
+                failed more approaches than I&rsquo;ve shipped.
               </p>
               <p>
-                What I have is will. And the ability to stay in a problem
-                until it stops being a problem.
+                What I have is: I don&rsquo;t stop when it gets hard.
+                Not because I&rsquo;m tough.
+                Because stopping feels worse than continuing.
               </p>
               <p>
-                That sounds simple. It isn&rsquo;t. Most people leave
-                before the problem yields. I stay.
+                College taught me I was good.
+                Work taught me good wasn&rsquo;t enough.
+              </p>
+              <p>
+                Smart gets you in the room.
+                Reliable keeps you there.
+                I learned that the hard way.
+                It&rsquo;s raining. We dance anyway.
               </p>
             </div>
           </SectionReveal>
@@ -58,22 +64,26 @@ export default function About() {
             </h2>
             <div className="space-y-6 text-muted text-body leading-relaxed">
               <p>
-                <span className="text-text">Building systems, not just features.</span>{' '}
-                I think in architecture — how the pieces connect,
-                where the failure points are, what happens at scale.
+                <span className="text-text">Understanding problems before touching solutions.</span>{' '}
+                I spent my first weeks at Mattel on the factory floor —
+                talking to mechanics, learning what a Tampo machine
+                physically does before modeling it in a database.
+                Bad code for the right problem beats perfect code
+                for the wrong one.
               </p>
               <p>
-                <span className="text-text">Explaining things.</span>{' '}
-                I taught Taekwondo to children.
-                I&rsquo;ve briefed factory managers on algorithm design.
-                The skill is the same: find where someone&rsquo;s mental model
-                breaks down, and rebuild it from there.
+                <span className="text-text">Explaining things across the gap.</span>{' '}
+                I&rsquo;ve taught Taekwondo to children and briefed
+                factory managers on algorithm design.
+                The skill is identical: find where someone&rsquo;s mental
+                model breaks, rebuild it from there.
               </p>
               <p>
-                <span className="text-text">Working in the seam between technical and business.</span>{' '}
-                I can read a P&amp;L and write a SQL schema in the same afternoon.
-                I find the gap between what engineers build and
-                what businesses actually need — and I close it.
+                <span className="text-text">Staying in rooms I&rsquo;m not supposed to stay in.</span>{' '}
+                Most engineers don&rsquo;t want to be in the budget
+                conversation, the client negotiation,
+                the change management meeting.
+                I&rsquo;ve learned to be useful there too.
               </p>
             </div>
           </SectionReveal>

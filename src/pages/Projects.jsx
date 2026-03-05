@@ -77,6 +77,22 @@ const projects = [
     tags: ['Cloud', 'Architecture'],
     categories: ['Web'],
   },
+  {
+    title: 'Pyomanizer',
+    context: 'Live',
+    description: 'Built because the Shopee version was terrible. Runs text through 15 translation hops across Kazakh, Georgian, Mongolian, Arabic, Zulu, Welsh. No neural networks. 95% AI detector bypass rate. Sometimes the dumbest solution is the right one.',
+    tags: ['Python', 'Google Translate', '95% bypass rate', 'Live ↗'],
+    categories: ['Web'],
+    link: 'https://pyomanizer.vercel.app',
+  },
+  {
+    title: 'Pyostock',
+    context: 'Live',
+    description: 'Built because financial news was confusing. Now it isn\'t. AI summarizes each story. Built for personal use, kept public.',
+    tags: ['Web', 'API', 'AI Summary', 'Live ↗'],
+    categories: ['Web'],
+    link: 'https://pyostock.vercel.app',
+  },
 ];
 
 export default function Projects() {
@@ -141,7 +157,7 @@ export default function Projects() {
           <div className="grid md:grid-cols-2 gap-6">
             {filtered.map((project, i) => (
               <SectionReveal key={project.title} delay={i * 0.3}>
-                <div className="bg-surface border border-border rounded-lg p-6 h-full">
+                <div className="bg-surface border border-border rounded-lg p-6 h-full flex flex-col">
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <h3 className="font-serif text-xl text-text">{project.title}</h3>
                     <span className="text-xs font-mono text-muted whitespace-nowrap mt-1">
@@ -149,9 +165,9 @@ export default function Projects() {
                     </span>
                   </div>
                   {project.description && (
-                    <p className="text-muted text-sm mb-4">{project.description}</p>
+                    <p className="text-muted text-sm mb-4 flex-1">{project.description}</p>
                   )}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mt-auto">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
@@ -161,6 +177,17 @@ export default function Projects() {
                       </span>
                     ))}
                   </div>
+                  {project.link && (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-mono mt-4 transition-colors"
+                      style={{ color: '#C8470D' }}
+                    >
+                      Visit ↗
+                    </a>
+                  )}
                 </div>
               </SectionReveal>
             ))}

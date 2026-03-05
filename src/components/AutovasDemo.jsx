@@ -210,7 +210,7 @@ export default function AutovasDemo() {
   }, [activePoly, canvasW, canvasH, marginVal, gapVal]);
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-prose mx-auto space-y-8">
       <div>
         <h3 className="font-serif text-2xl md:text-3xl text-text mb-2">Try it yourself.</h3>
         <p className="text-muted text-body">

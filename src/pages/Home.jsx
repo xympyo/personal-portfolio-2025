@@ -48,7 +48,7 @@ export default function Home() {
           <motion.div variants={fadeUp} custom={2} className="mt-12 space-y-1">
             <p className="text-sm text-muted">Moshe Dayan</p>
             <p className="text-sm text-muted">Final-year CS student. Informatics, President University.</p>
-            <p className="text-sm text-muted">Currently: Process Engineering Intern at PT Mattel Indonesia.</p>
+            <p className="text-sm text-muted">Process Engineering Intern @ PT Mattel Indonesia.</p>
           </motion.div>
 
           <motion.div variants={fadeUp} custom={3} className="mt-8 flex flex-wrap gap-4">
@@ -98,17 +98,16 @@ export default function Home() {
         <div className="max-w-content mx-auto">
           <SectionReveal>
             <div className="max-w-prose">
-              <h2 className="font-serif text-3xl md:text-4xl text-text mb-8">Hey — I&rsquo;m Moshe.</h2>
-              <div className="space-y-4 text-muted text-body">
+              <h2 className="font-serif text-3xl md:text-4xl text-text mb-8">I&rsquo;m Moshe.</h2>
+              <div className="space-y-4 text-text text-body leading-relaxed">
                 <p>
-                  Final-year Informatics student at President University.
-                  I specialize in the space between engineering and product —
-                  where the real problems live.
+                  I&rsquo;ve run a business, negotiated contracts, managed budgets,
+                  and built production systems.
                 </p>
                 <p>
-                  I&rsquo;ve built capacity planning systems for factory floors,
-                  negotiated software contracts, and taught Taekwondo to kids.
-                  None of that is a contradiction.
+                  Not because I couldn&rsquo;t pick one.
+                  Because I want to be in the room with anyone —
+                  and actually understand them.
                 </p>
               </div>
               <Link
