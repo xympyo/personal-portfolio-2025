@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import CaseStudyLayout from '../../components/CaseStudyLayout';
 import ScrollRevealBlock from '../../components/story/ScrollRevealBlock';
 import PullQuote from '../../components/story/PullQuote';
@@ -12,6 +13,10 @@ const heading = "font-serif text-3xl md:text-4xl text-text leading-[1.2]";
 const lbl = "text-xs font-mono uppercase tracking-[0.2em] text-muted mb-4 block";
 
 export default function Homize() {
+  useEffect(() => {
+    document.title = 'Homize — Moshe Dayan';
+  }, []);
+
   return (
     <CaseStudyLayout
       title="Homize"
@@ -191,7 +196,7 @@ export default function Homize() {
 
       {/* CLOSING PULL QUOTE */}
       <div className="my-16">
-        <PullQuote dark quote="The code is proof the thinking was right." />
+        <PullQuote dark quote="The code came after the thinking. That's how it should work." />
       </div>
     </CaseStudyLayout>
   );

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { pageTransition, staggerContainer, fadeUp } from '../lib/motion';
@@ -27,6 +28,12 @@ const works = [
 ];
 
 export default function Home() {
+  useEffect(() => {
+    document.title = 'Moshe Dayan — President University, Indonesia';
+  }, []);
+
+  const [active, setActive] = useState('All');
+
   return (
     <motion.div {...pageTransition}>
       {/* HERO */}

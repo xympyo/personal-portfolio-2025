@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { pageTransition } from '../lib/motion';
 import SectionReveal from '../components/SectionReveal';
@@ -96,6 +96,10 @@ const projects = [
 ];
 
 export default function Projects() {
+  useEffect(() => {
+    document.title = 'Projects — Moshe Dayan';
+  }, []);
+
   const [active, setActive] = useState('All');
 
   const filtered = active === 'All'

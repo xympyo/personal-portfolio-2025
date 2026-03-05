@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import CaseStudyLayout from '../../components/CaseStudyLayout';
 import ScrollRevealBlock from '../../components/story/ScrollRevealBlock';
 import PullQuote from '../../components/story/PullQuote';
@@ -13,6 +14,10 @@ const label = "text-xs font-mono uppercase tracking-[0.2em] text-muted mb-4 bloc
 const divider = <div className="w-16 h-px my-12 mx-auto" style={{ background: '#C8470D', opacity: 0.3 }} />;
 
 export default function Eden() {
+  useEffect(() => {
+    document.title = 'Project EDEN — Moshe Dayan';
+  }, []);
+
   return (
     <CaseStudyLayout
       title="Project EDEN"
@@ -201,18 +206,14 @@ export default function Eden() {
             <p>First instinct was wrong. I fixed it before it mattered. That's the job.</p>
             {divider}
             <p>
-              There was also a problem nobody mentioned in the brief:
-              600+ die-cast car images embedded inside Excel cell binaries.
-              Inaccessible to any web application.
+              The decision to build EDEN wasn&rsquo;t obvious.
+              It required convincing management to abandon a system
+              they had used for years, had tribal knowledge embedded in,
+              and trusted — not because it was good, but because
+              it was familiar.
             </p>
             <p>
-              I built an extraction pipeline.
-              Pulled every image, compressed them,
-              linked them to their part numbers in the database.
-            </p>
-            <p>
-              It wasn't in scope.
-              It needed to be done.
+              The technical problem was the easy part.
             </p>
           </div>
         </ScrollRevealBlock>

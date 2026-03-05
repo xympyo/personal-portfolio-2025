@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { pageTransition } from '../lib/motion';
 import SectionReveal from '../components/SectionReveal';
 
 export default function About() {
+  useEffect(() => {
+    document.title = 'About — Moshe Dayan';
+  }, []);
+
   return (
     <motion.div {...pageTransition}>
       <section className="section-padding px-6">
@@ -37,9 +42,9 @@ export default function About() {
                 failed more approaches than I&rsquo;ve shipped.
               </p>
               <p>
-                What I have is: I don&rsquo;t stop when it gets hard.
+                I don&rsquo;t stop when it gets hard.
                 Not because I&rsquo;m tough.
-                Because stopping feels worse than continuing.
+                Because stopping feels worse.
               </p>
               <p>
                 College taught me I was good.
@@ -108,10 +113,6 @@ export default function About() {
               <li className="flex gap-3">
                 <span className="text-accent mt-1.5">·</span>
                 <span>Google Project Management Certificate (in progress)</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="text-accent mt-1.5">·</span>
-                <span>Rebuilding this portfolio from scratch (the old one was embarrassing and I&rsquo;m fixing it)</span>
               </li>
             </ul>
           </SectionReveal>

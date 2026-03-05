@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import CaseStudyLayout from '../../components/CaseStudyLayout';
 import ScrollRevealBlock from '../../components/story/ScrollRevealBlock';
 import MentorQuote from '../../components/story/MentorQuote';
@@ -10,6 +11,10 @@ const heading = "font-serif text-3xl md:text-4xl text-text leading-[1.2]";
 const label = "text-xs font-mono uppercase tracking-[0.2em] text-muted mb-4 block";
 
 export default function Autovas() {
+  useEffect(() => {
+    document.title = 'Autovas — Moshe Dayan';
+  }, []);
+
   return (
     <CaseStudyLayout
       title="Autovas"
@@ -32,6 +37,8 @@ export default function Autovas() {
       <div className="my-16">
         <ScrollRevealBlock delay={100}>
           <div className={prose} style={{ color: '#1A1A1A' }}>
+            <p>The problem existed before anyone named it.</p>
+            <p>Most operators pack parts onto print beds by eye.</p>
             <p>I used to run a clothing business.</p>
             <p>
               DTF printing — heat transfer graphics onto fabric.
