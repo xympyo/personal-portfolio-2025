@@ -54,7 +54,7 @@ export default function About() {
                 Smart gets you in the room.
                 Reliable keeps you there.
                 I learned that the hard way.
-                It&rsquo;s raining. We dance anyway.
+                It&rsquo;s raining, but we dance anyway.
               </p>
             </div>
           </SectionReveal>
