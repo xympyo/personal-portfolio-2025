@@ -7,6 +7,7 @@ import CleaningLoop from '../../components/story/CleaningLoop';
 import MetricDrop from '../../components/story/MetricDrop';
 import SchemaEvolution from '../../components/story/SchemaEvolution';
 import BeforeAfterTable from '../../components/story/BeforeAfterTable';
+import EdenDashboard from '../../components/story/EdenDashboard';
 
 const prose = "text-base leading-[1.9] space-y-5";
 const heading = "font-serif text-3xl md:text-4xl text-text leading-[1.2]";
@@ -148,6 +149,22 @@ export default function Eden() {
         </ScrollRevealBlock>
       </div>
 
+      {/* DASHBOARD — Live System */}
+      <div className="my-16">
+        <div style={{ 
+          fontSize: 11, 
+          fontFamily: "monospace", 
+          color: "#9A9A8A",
+          textTransform: "uppercase",
+          letterSpacing: "0.08em",
+          marginBottom: 12,
+          textAlign: "center"
+        }}>
+          Live System · Anonymized Data
+        </div>
+        <EdenDashboard />
+      </div>
+
       {/* LAYER 3 — THE BUILD */}
       <div className="my-16">
         <ScrollRevealBlock>
@@ -174,6 +191,16 @@ export default function Eden() {
               He'd say A, then go to B, X, Y, Z, back to A.
             </p>
             <p>
+              The REST API took a full week. Every approach failed.
+              I eventually did what I should have done on day two —
+              walked to the other department's IT guy and told him straight:
+              I can't figure this out alone.
+            </p>
+            <p>
+              He helped. It worked the next day.
+            </p>
+            <p>
+              Knowing when to ask is also a skill.
               I learned to lower my ego before I learned the API worked.
               That part they don't teach in university.
             </p>

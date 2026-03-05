@@ -56,6 +56,14 @@ export default function About() {
                 I learned that the hard way.
                 It&rsquo;s raining, but we dance anyway.
               </p>
+              <p className="mt-8 mb-2">
+                Targeting APM and product roles at technology companies.
+              </p>
+              <p>
+                I want to be in the room where the decisions get made —
+                technical enough to build,
+                business-minded enough to know what&rsquo;s worth building.
+              </p>
             </div>
           </SectionReveal>
         </div>
@@ -90,6 +98,38 @@ export default function About() {
                 the change management meeting.
                 I&rsquo;ve learned to be useful there too.
               </p>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="font-serif text-xl md:text-2xl text-text mb-6">
+                Tools
+              </h3>
+              <div className="space-y-4 font-mono text-sm">
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted mb-2">
+                    Strong in:
+                  </div>
+                  <div className="text-text">
+                    Python · SQL · JavaScript / React · Laravel · Figma
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted mb-2">
+                    Know well enough:
+                  </div>
+                  <div className="text-text">
+                    ASP.NET Core · Flutter · PHP · MySQL · REST APIs · WebSockets · Firebase
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted mb-2">
+                    Currently learning:
+                  </div>
+                  <div className="text-text">
+                    Google Project Management · <span style={{ color: '#C8470D' }}>whatever the next problem needs</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </SectionReveal>
         </div>
