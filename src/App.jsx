@@ -9,6 +9,7 @@ import Eden from './pages/work/Eden';
 import Homize from './pages/work/Homize';
 import AutovasDemo from './pages/AutovasDemo';
 import ScrollToTop from './components/ScrollToTop';
+import { inject } from '@vercel/analytics';
 
 export default function App() {
   const location = useLocation();
@@ -29,6 +30,7 @@ export default function App() {
           </Routes>
         </AnimatePresence>
       </Layout>
+      <inject></inject>
     </>
   );
 }
