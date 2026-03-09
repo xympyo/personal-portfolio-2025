@@ -71,6 +71,7 @@ export default function Home() {
             </Link>
             <a
               href="/Moshe_Dayan_CV.pdf"
+              download="/Moshe_Dayan_CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text text-sm rounded hover:border-text transition-colors"
