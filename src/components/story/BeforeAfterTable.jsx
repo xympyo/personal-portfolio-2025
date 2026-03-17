@@ -26,7 +26,7 @@ export default function BeforeAfterTable({ rows, summary }) {
             transition: `opacity 400ms ease-out ${i * 60}ms, transform 400ms ease-out ${i * 60}ms`,
           }}
         >
-          <span className="text-sm font-mono" style={{ color: '#1A1A1A' }}>{row.label}</span>
+          <span className="text-sm font-mono" style={{ color: '#1A1A1A' }}>{row.metric}</span>
           <span className="text-sm" style={{ color: '#9A9A8A' }}>{row.before}</span>
           <span className="text-sm font-medium" style={{ color: '#C8470D' }}>{row.after}</span>
         </div>

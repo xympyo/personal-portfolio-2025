@@ -146,7 +146,7 @@ export default function Autovas() {
         </ScrollRevealBlock>
       </div>
 
-      <div className="my-16" style={{ display: 'flex', gap: '2rem', justifyContent: 'center' }}>
+      <div className="my-16" style={{ display: 'flex', justifyContent: 'center' }}>
         <MetricDrop
           beforeValue="2 weeks"
           afterValue="< 1 hour"
