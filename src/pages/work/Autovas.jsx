@@ -148,13 +148,13 @@ export default function Autovas() {
 
       <div className="my-16" style={{ display: 'flex', justifyContent: 'center' }}>
         <MetricDrop
-          beforeValue="2 weeks"
-          afterValue="< 1 hour"
+          from="2 weeks"
+          to="< 1 hour"
           label="Cavity layout time"
         />
         <MetricDrop
-          beforeValue="External vendor"
-          afterValue="In-house"
+          from="External vendor"
+          to="In-house"
           label="Dependency"
         />
       </div>
