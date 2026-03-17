@@ -606,11 +606,11 @@ export default function Autovas() {
       <div className="my-16">
         <BeforeAfterTable
           rows={[
-            { metric: 'Cavity layout time', before: '2 weeks (vendor)', after: '< 1 hour' },
-            { metric: 'Drafter bandwidth', before: '1-2 days per layout', after: 'Freed entirely' },
-            { metric: 'Vendor dependency', before: 'Required', after: 'Eliminated' },
-            { metric: 'Density vs bounding-box', before: 'Baseline', after: '+10-15% on irregular shapes' },
-            { metric: 'Configurations evaluated', before: '1 (manual)', after: 'Up to 203 (Bell partitions)' },
+            { label: 'Cavity layout time', before: '2 weeks (vendor)', after: '< 1 hour' },
+            { label: 'Drafter bandwidth', before: '1-2 days per layout', after: 'Freed entirely' },
+            { label: 'Vendor dependency', before: 'Required', after: 'Eliminated' },
+            { label: 'Density vs bounding-box', before: 'Baseline', after: '+10-15% on irregular shapes' },
+            { label: 'Configurations evaluated', before: '1 (manual)', after: 'Up to 203 (Bell partitions)' },
           ]}
         />
       </div>

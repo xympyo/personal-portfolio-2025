@@ -80,7 +80,7 @@ const projects = [
   {
     title: 'Pyomanizer',
     context: 'Live',
-    description: 'Built because the Shopee version was terrible. Runs text through 15 translation hops across Kazakh, Georgian, Mongolian, Arabic, Zulu, Welsh. No neural networks. 95% AI detector bypass rate. Sometimes the dumbest solution is the right one.',
+    description: 'Built because the paid version was terrible. Runs text through 15 translation hops across Kazakh, Georgian, Mongolian, Arabic, Zulu, Welsh. No neural networks. 95% AI detector bypass rate. Sometimes the dumbest solution is the right one.',
     tags: ['Python', 'Google Translate', '95% bypass rate', 'Live ↗'],
     categories: ['Web'],
     link: 'https://pyomanizer.vercel.app',
