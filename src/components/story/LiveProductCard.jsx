@@ -4,7 +4,7 @@ export default function LiveProductCard() {
   const [ref, isVisible] = useScrollReveal(0.3);
 
   return (
-    <div className="max-w-prose mx-auto px-6">
+    <div className="max-w-3xl mx-auto px-6">
       <div
         ref={ref}
         className="rounded-lg border p-8"

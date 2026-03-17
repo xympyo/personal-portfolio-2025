@@ -4,7 +4,7 @@ export default function NegotiationTimeline({ contracts, total }) {
   const [ref, isVisible] = useScrollReveal(0.2);
 
   return (
-    <div className="max-w-prose mx-auto px-6">
+    <div className="max-w-3xl mx-auto px-6">
       <div ref={ref} className="space-y-4">
       {contracts.map((contract, i) => (
         <div

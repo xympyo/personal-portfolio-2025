@@ -11,7 +11,7 @@ export default function About() {
   return (
     <motion.div {...pageTransition}>
       <section className="section-padding px-6">
-        <div className="max-w-prose mx-auto">
+        <div className="max-w-3xl mx-auto">
           <SectionReveal>
             <img 
               src="/MosheDayan.JPG" 
@@ -70,7 +70,7 @@ export default function About() {
       </section>
 
       <section className="px-6 pb-24 md:pb-32">
-        <div className="max-w-prose mx-auto">
+        <div className="max-w-3xl mx-auto">
           <SectionReveal>
             <h2 className="font-serif text-2xl md:text-3xl text-text mb-8">
               What I&rsquo;m good at
@@ -136,7 +136,7 @@ export default function About() {
       </section>
 
       <section className="px-6 pb-24 md:pb-32">
-        <div className="max-w-prose mx-auto">
+        <div className="max-w-3xl mx-auto">
           <SectionReveal>
             <h2 className="font-serif text-2xl md:text-3xl text-text mb-8">
               Currently

@@ -30,7 +30,7 @@ export default function ImprovementCounter({ value, prefix = '', suffix = '', la
   }, [isVisible, value]);
 
   return (
-    <div className="max-w-prose mx-auto px-6">
+    <div className="max-w-3xl mx-auto px-6">
       <div
         ref={ref}
         className="rounded-lg px-8 py-12 text-center"

@@ -104,9 +104,9 @@ export default function Autovas() {
               The obvious framing for this problem is material waste.
               Pack shapes tighter, use less substrate, save money.
             </p>
-            <p>That's real. But it's not the actual problem at Mattel.</p>
+            <p>That's real. But it's not the actual problem.</p>
             <p>
-              At PT Mattel Indonesia, when a new toy part needs a
+              In a manufacturing production line, when a new part needs a
               cavity layout — how many copies fit on one print canvas,
               in what arrangement — there are two options:
             </p>
@@ -116,7 +116,7 @@ export default function Autovas() {
               it. And drafters have a full queue of other work.
             </p>
             <p>
-              Option B: Send the part to the external vendor (Willona).
+              Option B: Send the part to an external vendor.
               Wait for the layout back.
             </p>
             <p>
@@ -498,7 +498,7 @@ export default function Autovas() {
           <div className={prose} style={{ color: '#1A1A1A' }}>
             <p>The browser demo on this page is a simplified version.</p>
             <p>
-              The production system running at PT Mattel Indonesia
+              The production system running in the factory
               is something else entirely.
             </p>
           </div>
@@ -529,7 +529,7 @@ export default function Autovas() {
               </div>
             </div>
             <div style={{ fontSize: 11, color: '#9A9A8A', marginBottom: 20 }}>
-              PT Mattel Indonesia · 2025
+              Production System · 2025
             </div>
             <div style={{ fontSize: 13, lineHeight: 1.8, color: '#F5F2EE' }}>
               <p style={{ marginBottom: 12 }}>

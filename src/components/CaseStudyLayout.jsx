@@ -7,7 +7,7 @@ export default function CaseStudyLayout({ title, subtitle, meta, children }) {
   return (
     <motion.div {...pageTransition}>
       <section className="section-padding px-6">
-        <div className="max-w-prose mx-auto">
+        <div className="max-w-3xl mx-auto">
           <Link
             to="/#work"
             className="inline-block text-sm text-muted hover:text-text transition-colors mb-12"
@@ -37,7 +37,7 @@ export default function CaseStudyLayout({ title, subtitle, meta, children }) {
 export function CaseSection({ label, title, children }) {
   return (
     <section className="px-6 pb-24 md:pb-32">
-      <div className="max-w-prose mx-auto">
+      <div className="max-w-3xl mx-auto">
         <SectionReveal>
           {label && (
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-accent mb-4">

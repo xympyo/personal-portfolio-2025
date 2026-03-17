@@ -14,7 +14,7 @@ export default function MetricDrop({ from, to, label, sublabel }) {
   }, [isVisible]);
 
   return (
-    <div className="max-w-prose mx-auto px-6">
+    <div className="max-w-3xl mx-auto px-6">
       <div ref={ref} className="rounded-lg overflow-hidden" style={{ background: '#1A1A1A' }}>
       <div className="px-8 py-10">
         {label && (

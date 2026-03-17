@@ -30,7 +30,7 @@ const featuredWorks = [
 const projects = [
   {
     title: 'Deep Learning Package Verification',
-    context: 'PT Mattel Indonesia, 2025',
+    context: 'Production System, 2025',
     description: '4-stage pipeline: YOLO → Hi-SAM → Parseq → Llama 4 Maverick/Scout',
     tags: ['Deep Learning', 'Computer Vision', 'NLP', 'Python'],
     categories: ['AI/ML'],
@@ -109,7 +109,7 @@ export default function Projects() {
   return (
     <motion.div {...pageTransition}>
       <section className="section-padding px-6">
-        <div className="max-w-content mx-auto">
+        <div className="max-w-3xl mx-auto">
           {/* FEATURED WORK */}
           <SectionReveal>
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-12">

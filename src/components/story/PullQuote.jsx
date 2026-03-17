@@ -8,7 +8,7 @@ export default function PullQuote({ quote, attribution, dark = false }) {
   const attrColor = '#9A9A8A';
 
   // Dark variant is full-width, light variant is contained
-  const containerClass = dark ? '' : 'max-w-prose mx-auto px-6';
+  const containerClass = dark ? '' : 'max-w-3xl mx-auto px-6';
 
   return (
     <div className={containerClass}>
@@ -22,7 +22,7 @@ export default function PullQuote({ quote, attribution, dark = false }) {
         }}
         className="px-8 py-12 md:px-16 md:py-14"
       >
-        <div className='max-w-prose mx-auto'>
+        <div className='max-w-3xl mx-auto'>
 
           <p
             className="font-serif text-2xl md:text-3xl lg:text-4xl leading-[1.3]"

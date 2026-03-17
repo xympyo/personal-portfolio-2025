@@ -4,7 +4,7 @@ export default function BeforeAfterTable({ rows, summary }) {
   const [ref, isVisible] = useScrollReveal(0.2);
 
   return (
-    <div className="max-w-prose mx-auto px-6">
+    <div className="max-w-3xl mx-auto px-6">
       <div ref={ref} className="rounded-lg overflow-hidden border" style={{ borderColor: '#E0DDD8' }}>
       {/* Header */}
       <div className="grid grid-cols-3 px-6 py-3 border-b" style={{ borderColor: '#E0DDD8', background: '#F5F2EE' }}>

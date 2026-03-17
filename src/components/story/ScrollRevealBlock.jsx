@@ -4,7 +4,7 @@ export default function ScrollRevealBlock({ children, delay = 0 }) {
   const [ref, isVisible] = useScrollReveal(0.2);
 
   return (
-    <div className="max-w-prose mx-auto px-6">
+    <div className="max-w-3xl mx-auto px-6">
       <div
         ref={ref}
         style={{

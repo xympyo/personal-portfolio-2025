@@ -43,7 +43,7 @@ export default function Home() {
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
-          className="max-w-content mx-auto relative z-10"
+          className="max-w-3xl mx-auto relative z-10"
         >
           <motion.p variants={fadeUp} custom={0} className="font-serif text-4xl md:text-6xl lg:text-7xl text-text leading-[1.15] max-w-[800px]">
             There&rsquo;s no can or can&rsquo;t.
@@ -84,7 +84,7 @@ export default function Home() {
 
       {/* SELECTED WORK */}
       <section id="work" className="section-padding px-6">
-        <div className="max-w-content mx-auto">
+        <div className="max-w-3xl mx-auto">
           <SectionReveal>
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted mb-12">
               Selected Work
@@ -103,9 +103,9 @@ export default function Home() {
 
       {/* ABOUT STRIP */}
       <section className="section-padding px-6">
-        <div className="max-w-content mx-auto">
+        <div className="max-w-3xl mx-auto">
           <SectionReveal>
-            <div className="max-w-prose">
+            <div className="max-w-3xl">
               <h2 className="font-serif text-3xl md:text-4xl text-text mb-8">I&rsquo;m Moshe.</h2>
               <div className="space-y-4 text-text text-body leading-relaxed">
                 <p>
@@ -131,7 +131,7 @@ export default function Home() {
 
       {/* CONTACT STRIP */}
       <section id="contact" className="section-padding px-6 border-t border-border">
-        <div className="max-w-content mx-auto">
+        <div className="max-w-3xl mx-auto">
           <SectionReveal>
             <h2 className="font-serif text-3xl md:text-4xl text-text mb-4">
               Want to work together?

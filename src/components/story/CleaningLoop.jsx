@@ -15,7 +15,7 @@ export default function CleaningLoop({ steps }) {
   });
 
   return (
-    <div className="max-w-prose mx-auto px-6">
+    <div className="max-w-3xl mx-auto px-6">
       <div className="flex flex-col items-center">
       <div style={{ width: 320, height: 320, position: 'relative' }}>
         <svg

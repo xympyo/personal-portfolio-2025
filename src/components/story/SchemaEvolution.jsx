@@ -6,7 +6,7 @@ export default function SchemaEvolution() {
   const phase = isVisible ? "visible" : "hidden";
 
   return (
-    <div className="max-w-prose mx-auto px-6">
+    <div className="max-w-3xl mx-auto px-6">
       <div
         ref={ref}
         className="rounded-lg border overflow-hidden"
