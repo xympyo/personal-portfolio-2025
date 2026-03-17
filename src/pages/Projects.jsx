@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { pageTransition } from '../lib/motion';
 import SectionReveal from '../components/SectionReveal';
 import WorkCard from '../components/WorkCard';
+import { div, link } from 'framer-motion/client';
 
 const filters = ['All', 'AI/ML', 'Mobile', 'Web', 'Competition'];
 
@@ -62,6 +63,7 @@ const projects = [
     description: null,
     tags: ['Web', 'Laravel', 'Live ↗'],
     categories: ['Web'],
+    link:['https://komplenifas.vercel.app'],
   },
   {
     title: 'Prediver',
@@ -71,11 +73,12 @@ const projects = [
     categories: ['AI/ML'],
   },
   {
-    title: 'SmartWasteOps',
-    context: 'Capstone concept',
+    title: 'Angkut',
+    context: 'Capstone Project',
     description: 'Cloud architecture with Load Balancers + Auto-Scaling.',
-    tags: ['Cloud', 'Architecture'],
-    categories: ['Web'],
+    tags: ['Cloud', 'Architecture', 'Live Resident Mobile View', 'Live Collector Mobile View'],
+    categories: ['Web', 'Mobile'],
+    link: ['https://capstone-resident-mobile-application.vercel.app', 'https://capstone-collector-mobile-application.vercel.app'],
   },
   {
     title: 'Pyomanizer',
@@ -83,7 +86,7 @@ const projects = [
     description: 'Built because the paid version was terrible. Runs text through 15 translation hops across Kazakh, Georgian, Mongolian, Arabic, Zulu, Welsh. No neural networks. 95% AI detector bypass rate. Sometimes the dumbest solution is the right one.',
     tags: ['Python', 'Google Translate', '95% bypass rate', 'Live ↗'],
     categories: ['Web'],
-    link: 'https://pyomanizer.vercel.app',
+    link: ['https://pyomanizer.vercel.app'],
   },
   {
     title: 'Pyostock',
@@ -91,7 +94,7 @@ const projects = [
     description: 'Built because financial news was confusing. Now it isn\'t. AI summarizes each story. Built for personal use, kept public.',
     tags: ['Web', 'API', 'AI Summary', 'Live ↗'],
     categories: ['Web'],
-    link: 'https://pyostock.vercel.app',
+    link: ['https://pyostock.vercel.app'],
   },
 ];
 
@@ -146,11 +149,10 @@ export default function Projects() {
                 <button
                   key={f}
                   onClick={() => setActive(f)}
-                  className={`text-sm px-4 py-2 rounded border transition-colors ${
-                    active === f
-                      ? 'bg-dark text-bg border-dark'
-                      : 'bg-transparent text-muted border-border hover:border-text hover:text-text'
-                  }`}
+                  className={`text-sm px-4 py-2 rounded border transition-colors ${active === f
+                    ? 'bg-dark text-bg border-dark'
+                    : 'bg-transparent text-muted border-border hover:border-text hover:text-text'
+                    }`}
                 >
                   {f}
                 </button>
@@ -182,15 +184,33 @@ export default function Projects() {
                     ))}
                   </div>
                   {project.link && (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-mono mt-4 transition-colors"
-                      style={{ color: '#C8470D' }}
-                    >
-                      Visit ↗
-                    </a>
+                    project.link.length > 1 ? (
+                      <div className='flex gap-4 mt-4'>
+                        {project.link.map((link) => (
+                          <a
+                            key={link}
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-mono transition-colors"
+                            style={{ color: '#C8470D' }}
+                          >
+                            Visit ↗
+                          </a>
+                        ))}
+                      </div>
+                    ) : (
+                      <a
+                        key={project.link}
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-mono mt-4 transition-colors"
+                        style={{ color: '#C8470D' }}
+                      >
+                        Visit ↗
+                      </a>
+                    )
                   )}
                 </div>
               </SectionReveal>
